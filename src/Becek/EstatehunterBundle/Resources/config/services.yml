@@ -1,0 +1,4 @@
+services:
+#    becek_estatehunter.example:
+#        class: Becek\EstatehunterBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

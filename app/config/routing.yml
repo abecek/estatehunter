@@ -1,1 +1,7 @@
+becek_estatehunter:
+    resource: "@BecekEstatehunterBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+
 
