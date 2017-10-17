@@ -2039,12 +2039,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "f757cd65e262e6d7188d8053e93a59a8dc69a12a"
+                "reference": "1f4025a0aea5f87c0fc7f1c419eb6df5022a9be7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/f757cd65e262e6d7188d8053e93a59a8dc69a12a",
-                "reference": "f757cd65e262e6d7188d8053e93a59a8dc69a12a",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/1f4025a0aea5f87c0fc7f1c419eb6df5022a9be7",
+                "reference": "1f4025a0aea5f87c0fc7f1c419eb6df5022a9be7",
                 "shasum": ""
             },
             "require": {
@@ -2061,7 +2061,7 @@
                 "symfony/polyfill-intl-icu": "~1.0",
                 "symfony/polyfill-mbstring": "~1.0",
                 "symfony/polyfill-php56": "~1.0",
-                "symfony/polyfill-php70": "~1.0",
+                "symfony/polyfill-php70": "~1.6",
                 "symfony/polyfill-util": "~1.0",
                 "twig/twig": "^1.35|^2.4.4"
             },
@@ -2185,7 +2185,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-10-16 20:33:36"
+            "time": "2017-10-16 22:59:43"
         },
         {
             "name": "twig/twig",

@@ -97,11 +97,9 @@ class DefaultController extends Controller
             */
 
 
-            $param1 = null;
-            $param2 = null;
-            exec('/mingw64/bin/curl http://dom.gratka.pl/mieszkania-sprzedam/lista/,,155000,250000,Łódź,2000,4000,39,75,on,co,cd,lok,cmo,cmd,mo,md,zi.html -o "C:\xampp\htdocs\estatehunter\outTest.txt"', $param1, $param2);
-            var_dump($param1);
-            var_dump($param2);
+
+            exec("wget -R jpg,png,jpeg,gif --accept html http://dom.gratka.pl/mieszkania-sprzedam/lista/lodzkie,lodz,100000,250000,2000,5000,35,65,on,co,cd,cmo,cmd,mo,md,zi.html");
+
             exit;
 
         }
