@@ -1,7 +1,19 @@
+#Yaml routing example
+homepage:
+    path:     /{page}
+    defaults: { _controller: BecekEstatehunterBundle:Default:index, page: 1 }
+    methods:  ['GET','POST']
+    requirements:
+            page: '\d+'
+
+output:
+    path:     /output
+    defaults: { _controller: BecekEstatehunterBundle:Default:getOutput }
+    methods:  ['GET','POST']
+
 becek_estatehunter:
     resource: "@BecekEstatehunterBundle/Controller/"
     type:     annotation
     prefix:   /
-
 
 
