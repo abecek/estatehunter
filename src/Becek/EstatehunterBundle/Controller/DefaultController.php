@@ -4,6 +4,7 @@ namespace Becek\EstatehunterBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -13,31 +14,52 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Validator\Constraints\File;
+
+use Becek\EstatehunterBundle\Utils\DomGratkaGenerator;
+use Symfony\Component\Validator\Constraints\Choice;
 
 class DefaultController extends Controller
 {
-
 
     public function indexAction(Request $request)
     {
         $form = $this->createFormBuilder(null, array(
             'attr' => array('class' => 'form'),
-        ))
-            ->add('priceFrom', MoneyType::class, array(
+        ))->add('buildingType', ChoiceType::class, array(
+            'label' => 'Wybierz kategorię:',
+            'attr' => array('class' => 'form-control'),
+            'choices' => array(
+                'Mieszkania' => 'mieszkania',
+                'Domy' => 'domy',
+                'Działki i grunty' => 'dzialki-grunty',
+                'Lokale użytkowe' => 'lokale-obiekty',
+            ),
+        ))->add('offerType', ChoiceType::class, array(
+            'label' => 'Rodzaj ogłoszenia:',
+            'attr' => array('class' => 'form-control'),
+            'choices' => array(
+                'na sprzedaż' => 'sprzedam',
+                'do wynajęcia' => 'do-wynajecia',
+                'inne oferty' => 'inne',
+            ),
+        ))->add('priceFrom', MoneyType::class, array(
             'label' => 'Cena od:',
+            'currency' => '',
             'required'   => false,
             'attr' => array('class' => 'form-control')
         ))->add('priceTo', MoneyType::class, array(
             'label' => 'Cena do:',
+            'currency' => '',
             'required'   => false,
             'attr' => array('class' => 'form-control')
         ))->add('priceByAreaFrom', MoneyType::class, array(
-            'label' => 'Cena za M^2 od:',
+            'label' => 'Cena za m^2 od:',
+            'currency' => '',
             'required'   => false,
             'attr' => array('class' => 'form-control')
         ))->add('priceByAreaTo', MoneyType::class, array(
-            'label' => 'Cena za M^2 do:',
+            'label' => 'Cena za m^2 do:',
+            'currency' => '',
             'required'   => false,
             'attr' => array('class' => 'form-control')
         ))->add('areaFrom', TextType::class, array(
@@ -48,10 +70,28 @@ class DefaultController extends Controller
             'label' => 'Powierzchnia do:',
             'required'   => false,
             'attr' => array('class' => 'form-control')
-        ))->add('localization', TextType::class, array(
-            'label' => 'Lokalizacja:',
+        ))->add('localizationRegion', TextType::class, array(
+            'label' => 'Lokalizacja(województwo):',
             'required'   => false,
             'attr' => array('class' => 'form-control')
+        ))->add('localizationSubregion', TextType::class, array(
+            'label' => 'Lokalizacja(powiat):',
+            'required'   => false,
+            'attr' => array('class' => 'form-control')
+        ))->add('localizationTown', TextType::class, array(
+            'label' => 'Lokalizacja(miejscowość):',
+            'required'   => false,
+            'attr' => array('class' => 'form-control')
+        ))->add('addedBy', ChoiceType::class, array(
+            'label' => 'Dodane przez:',
+            'attr' => array('class' => 'form-control'),
+            'choices' => array(
+                'Wszystkich' => null,
+                'Biura nieruchomości' => 'estate agencies',
+                'Gazety' => 'newspapers',
+                'Osoby prywatne' => 'private persons',
+                'Inne' => 'others',
+            ),
         ))->add('submit', SubmitType::class, array(
             'label' => 'Szukaj!',
             'attr' => array('class' => 'btn btn-block btn-primary btn-lg')
@@ -60,64 +100,42 @@ class DefaultController extends Controller
 
         $data = null;
         $html = null;
+        $offers = array();
+
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $data = $form->getData();
 
-            /*
-            $curlHandle = curl_init();
+            $options = array();
+            $options['buildingType'] = $data['buildingType'];
+            $options['offerType'] = $data['offerType'];
+            $options['priceFrom'] = $data['priceFrom'];
+            $options['priceTo'] = $data['priceTo'];
+            $options['priceByAreaFrom'] = $data['priceByAreaFrom'];
+            $options['priceByAreaTo'] = $data['priceByAreaTo'];
+            $options['areaFrom'] = $data['areaFrom'];
+            $options['areaTo'] = $data['areaTo'];
+            $options['localization']['region'] = $data['localizationRegion'];
+            $options['localization']['subregion'] = $data['localizationSubregion'];
+            $options['localization']['town'] = $data['localizationTown'];
+            $options['addedBy'] = $data['addedBy'];
 
-            curl_setopt($curlHandle, CURLOPT_URL,
-                'http://dom.gratka.pl/mieszkania-sprzedam/lista/,,155000,250000,Łódź,2000,4000,39,75,on,co,cd,lok,cmo,cmd,mo,md,zi.html'
-            );
+            $domGratkaGenerator = new DomGratkaGenerator();
+            $offers = $domGratkaGenerator->loadOffersFromPage($options);
 
-            curl_setopt($curlHandle, CURLOPT_URL,
-                'https://www.otodom.pl/sprzedaz/mieszkanie/lodz/?search[filter_float_price:from]=150000&search[filter_float_price:to]=300000&search[filter_float_price_per_m:from]=2500&search[filter_float_price_per_m:to]=3500&search[filter_float_m:from]=40&search[filter_float_m:to]=70&search[description]=1&search[private_business]=private&search[dist]=0&search[subregion_id]=127&search[city_id]=1004'
-            );
-
-            curl_setopt($curlHandle, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36');
-            curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, true);
-            //curl_setopt($curlHandle, CURLOPT_COOKIEJAR, 'cookie.txt');
-            $html = curl_exec($curlHandle);
-            curl_close($curlHandle);
-            */
-
-            /*
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "http://dom.gratka.pl/mieszkania-sprzedam/lista/,,155000,250000,Łódź,2000,4000,39,75,on,co,cd,lok,cmo,cmd,mo,md,zi.html");
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $result = curl_exec($ch);
-            if(curl_errno($ch)){
-                echo 'Error: ' . curl_error($ch);
-            }
-            curl_close($ch);
-            var_dump($result);
-            exit;
-            */
-
-
-
-            exec("wget -R jpg,png,jpeg,gif --accept html http://dom.gratka.pl/mieszkania-sprzedam/lista/lodzkie,lodz,100000,250000,2000,5000,35,65,on,co,cd,cmo,cmd,mo,md,zi.html");
-
-            exit;
 
         }
 
         return $this->render("@BecekEstatehunter/Default/index.html.twig", array(
             'searchForm' => $form->createView(),
             'data' => $data,
-            'html' => $html,
+            'html' => $offers,
         ));
     }
 
     public function getOutputAction(Request $request)
     {
-        $fs = new Filesystem();
-        $fs->dumpFile('file.txt', $request);
-        var_dump($request);
 
-        exit;
         return $this->render("@BecekEstatehunter/Default/index.html.twig", array(
 
         ));
