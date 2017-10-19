@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,27 +27,53 @@
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('gratka') }}">DomGratka</a>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ path('gratka') }}">DomGratka <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('otodom') }}">Olx</a>
+                <a class="nav-link" href="{{ path('otodom') }}">Otodom</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Otodom</a>
+                <a class="nav-link" href="#">Olx</a>
             </li>
         </ul>
+
     </div>
 </nav>
 
 
 <div class="container">
     <div class="starter-template">
-        <h1>Wyszukaj oferty na portalach ogłoszeniowych</h1>
+        <h1>Wyszukaj oferty na dom.gratka.pl</h1>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-4">
+                {{ form_start(searchForm) }}
+                {{ form_widget(searchForm) }}
+                {{ form_end(searchForm) }}
+            </div>
+            <div class="col-md-8">
+                <div>
+                    {% if data is not null %}
+                        {{ dump(data) }}
+                    {% endif %}
+                </div>
+                <div>
+                    {% if html is not null %}
+                        {{ dump(html) }}
+                    {% endif %}
+                </div>
+                {#
+                <table class="table table-dark table-hover table-bordered">
+                    <tr>
+                        <td>
 
+                        </td>
+                        <td>
 
+                        </td>
+                    </tr>
+                </table>
+                #}
             </div>
         </div>
     </div>

@@ -6,7 +6,7 @@
  * Time: 00:51
  */
 
-namespace Becek\EstatehunterBundle\Utils;
+namespace Becek\EstatehunterBundle\Utils\Generators;
 
 /**
  * Class OfferGenerator

@@ -1,7 +1,21 @@
 #Yaml routing example
 homepage:
-    path:     /{page}
-    defaults: { _controller: BecekEstatehunterBundle:Default:index, page: 1 }
+    path:     /
+    defaults: { _controller: BecekEstatehunterBundle:Default:index }
+    methods:  ['GET','POST']
+    requirements:
+            page: '\d+'
+
+gratka:
+    path:     /gratka/{page}
+    defaults: { _controller: BecekEstatehunterBundle:Default:gratka, page: 1 }
+    methods:  ['GET','POST']
+    requirements:
+            page: '\d+'
+
+otodom:
+    path:     /otodom/{page}
+    defaults: { _controller: BecekEstatehunterBundle:Default:otodom, page: 1 }
     methods:  ['GET','POST']
     requirements:
             page: '\d+'
