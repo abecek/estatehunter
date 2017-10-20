@@ -14,11 +14,9 @@ gratka:
             page: '\d+'
 
 otodom:
-    path:     /otodom/{page}
-    defaults: { _controller: BecekEstatehunterBundle:Default:otodom, page: 1 }
+    path:     /otodom
+    defaults: { _controller: BecekEstatehunterBundle:Default:otodom }
     methods:  ['GET','POST']
-    requirements:
-            page: '\d+'
 
 output:
     path:     /output
