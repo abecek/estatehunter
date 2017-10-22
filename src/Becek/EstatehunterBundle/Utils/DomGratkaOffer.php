@@ -25,12 +25,6 @@ class DomGratkaOffer extends BaseOffer
     private $additionalArea;
 
     /**
-     * @var string
-     */
-    private $shortDescription;
-
-
-    /**
      * GratkaOffer constructor.
      * @param mixed|string $additionalArea
      */
@@ -55,21 +49,6 @@ class DomGratkaOffer extends BaseOffer
         $this->surcharge = $surcharge;
     }
 
-    /**
-     * @return string
-     */
-    public function getShortDescription()
-    {
-        return $this->shortDescription;
-    }
-
-    /**
-     * @param string $shortDescription
-     */
-    public function setShortDescription($shortDescription)
-    {
-        $this->shortDescription = $shortDescription;
-    }
 
     /**
      * @return mixed|string

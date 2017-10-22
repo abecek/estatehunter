@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="640e4c25-10e9-4172-b559-0a4bb65b0eaa" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Controller/DefaultController.php" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Controller/DefaultController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/DomGratkaOffer.php" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/DomGratkaOffer.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Generators/DomGratkaGenerator.php" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Generators/DomGratkaGenerator.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Generators/OtodomGenerator.php" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Generators/OtodomGenerator.php" />
     </list>
@@ -28,8 +31,8 @@
       <file leaf-file-name="DefaultController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Becek/EstatehunterBundle/Controller/DefaultController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-13.653846">
-              <caret line="311" column="17" selection-start-line="311" selection-start-column="17" selection-end-line="311" selection-end-column="17" />
+            <state vertical-scroll-proportion="-21.23077">
+              <caret line="215" column="0" selection-start-line="215" selection-start-column="0" selection-end-line="215" selection-end-column="0" />
               <folding>
                 <element signature="e#55#112#0#PHP" expanded="true" />
               </folding>
@@ -40,8 +43,8 @@
       <file leaf-file-name="OtodomGenerator.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Generators/OtodomGenerator.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.59090906">
-              <caret line="217" column="8" selection-start-line="217" selection-start-column="8" selection-end-line="217" selection-end-column="8" />
+            <state vertical-scroll-proportion="0.32923833">
+              <caret line="89" column="83" selection-start-line="89" selection-start-column="83" selection-end-line="89" selection-end-column="83" />
               <folding>
                 <element signature="e#144#188#0#PHP" expanded="true" />
               </folding>
@@ -52,8 +55,8 @@
       <file leaf-file-name="DomGratkaGenerator.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Generators/DomGratkaGenerator.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.576923">
-              <caret line="269" column="16" selection-start-line="269" selection-start-column="8" selection-end-line="269" selection-end-column="16" />
+            <state vertical-scroll-proportion="-22.192308">
+              <caret line="250" column="14" selection-start-line="250" selection-start-column="14" selection-end-line="250" selection-end-column="14" />
               <folding>
                 <element signature="e#144#214#0#PHP" expanded="true" />
               </folding>
@@ -73,10 +76,6 @@
   </component>
   <component name="FrameworkCommandLineHistory">
     <commandsHistory>
-      <command text="php bin/console" />
-      <command text="php bin/console cache:clear" />
-      <command text="php bin/console assets:install --symlink" />
-      <command text="php bin/console cache:clear" />
       <command text="php bin/console assets:install --symlink" />
       <command text="git init" />
       <command text="git add . " />
@@ -98,13 +97,14 @@
       <command text="ggit commit -m &quot;Working on generating objects from otodom&quot;" />
       <command text="git commit -m &quot;Working on generating objects from otodom&quot;" />
       <command text="git push" />
+      <command text="git init" />
+      <command text="git add ." />
+      <command text="git commit -m &quot;One bug was found&quot;" />
+      <command text="git push" />
     </commandsHistory>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///Dummy.txt" root0="SKIP_INSPECTION" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -125,9 +125,7 @@
         <option value="$PROJECT_DIR$/tmp/temp.html" />
         <option value="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/simple_html_dom.php" />
         <option value="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Interfaces/OfferGenerator.php" />
-        <option value="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/DomGratkaOffer.php" />
         <option value="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/OtodomOffer.php" />
-        <option value="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/BaseOffer.php" />
         <option value="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/OfferGenerator.php" />
         <option value="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/DomGratkaGenerator.php" />
         <option value="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Interfaces/OfferGeneratorInterface.php" />
@@ -135,9 +133,11 @@
         <option value="$PROJECT_DIR$/app/config/routing.yml" />
         <option value="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Resources/views/Default/otodom.html.twig" />
         <option value="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Resources/views/Default/gratka.html.twig" />
-        <option value="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Controller/DefaultController.php" />
         <option value="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Generators/OfferGenerator.php" />
+        <option value="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/DomGratkaOffer.php" />
+        <option value="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/BaseOffer.php" />
         <option value="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Generators/DomGratkaGenerator.php" />
+        <option value="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Controller/DefaultController.php" />
         <option value="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Generators/OtodomGenerator.php" />
       </list>
     </option>
@@ -182,8 +182,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -495,11 +495,10 @@
     <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19902913" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20226537" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32996634" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Command Line Tools Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4032258" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -508,6 +507,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Command Line Tools Console" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4032258" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32996634" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -557,7 +557,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="53" column="65" selection-start-line="53" selection-start-column="65" selection-end-line="53" selection-end-column="65" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -829,22 +828,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/OtodomOffer.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3046595">
-          <caret line="30" column="4" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/DomGratkaOffer.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.6117085">
-          <caret line="88" column="0" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/config/routing_dev.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -891,7 +874,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.65384614">
           <caret line="53" column="65" selection-start-line="53" selection-start-column="65" selection-end-line="53" selection-end-column="65" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -903,38 +885,54 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/BaseOffer.php">
+    <entry file="file://$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/OtodomOffer.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0083632">
-          <caret line="90" column="27" selection-start-line="90" selection-start-column="27" selection-end-line="90" selection-end-column="27" />
+        <state vertical-scroll-proportion="0.38083538">
+          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Becek/EstatehunterBundle/Controller/DefaultController.php">
+    <entry file="file://$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/DomGratkaOffer.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.653846">
-          <caret line="311" column="17" selection-start-line="311" selection-start-column="17" selection-end-line="311" selection-end-column="17" />
-          <folding>
-            <element signature="e#55#112#0#PHP" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.34889436">
+          <caret line="24" column="28" selection-start-line="24" selection-start-column="28" selection-end-line="24" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/BaseOffer.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.307693">
+          <caret line="192" column="0" selection-start-line="192" selection-start-column="0" selection-end-line="192" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Generators/DomGratkaGenerator.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.576923">
-          <caret line="269" column="16" selection-start-line="269" selection-start-column="8" selection-end-line="269" selection-end-column="16" />
+        <state vertical-scroll-proportion="-22.192308">
+          <caret line="250" column="14" selection-start-line="250" selection-start-column="14" selection-end-line="250" selection-end-column="14" />
           <folding>
             <element signature="e#144#214#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Becek/EstatehunterBundle/Controller/DefaultController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-21.23077">
+          <caret line="215" column="0" selection-start-line="215" selection-start-column="0" selection-end-line="215" selection-end-column="0" />
+          <folding>
+            <element signature="e#55#112#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Generators/OtodomGenerator.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.59090906">
-          <caret line="217" column="8" selection-start-line="217" selection-start-column="8" selection-end-line="217" selection-end-column="8" />
+        <state vertical-scroll-proportion="0.32923833">
+          <caret line="89" column="83" selection-start-line="89" selection-start-column="83" selection-end-line="89" selection-end-column="83" />
           <folding>
             <element signature="e#144#188#0#PHP" expanded="true" />
           </folding>

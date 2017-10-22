@@ -46,11 +46,6 @@ abstract class BaseOffer
     protected $area;
 
     /**
-     * @var string
-     */
-    protected $marketSource;
-
-    /**
      * @var integer
      */
     protected $constructionYear;
@@ -94,6 +89,11 @@ abstract class BaseOffer
      * @var Datetime
      */
     protected $dateAdded;
+
+    /**
+     * @var string
+     */
+    protected $shortDescription;
 
     /**
      * @return int
@@ -189,22 +189,6 @@ abstract class BaseOffer
     public function setArea($area)
     {
         $this->area = $area;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMarketSource()
-    {
-        return $this->marketSource;
-    }
-
-    /**
-     * @param string $marketSource
-     */
-    public function setMarketSource($marketSource)
-    {
-        $this->marketSource = $marketSource;
     }
 
     /**
@@ -349,6 +333,22 @@ abstract class BaseOffer
     public function setDateAdded($dateAdded)
     {
         $this->dateAdded = $dateAdded;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortDescription()
+    {
+        return $this->shortDescription;
+    }
+
+    /**
+     * @param string $shortDescripton
+     */
+    public function setShortDescription($shortDescription)
+    {
+        $this->shortDescription = $shortDescription;
     }
 
 }

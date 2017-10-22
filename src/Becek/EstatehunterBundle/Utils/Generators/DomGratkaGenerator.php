@@ -32,12 +32,6 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
      */
     protected $offersCount = null;
 
-
-    /**
-     * @var string
-     */
-    protected $html;
-
     /**
      * @return int
      */
@@ -254,8 +248,12 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
                 $this->offersAsObjectsArray[$id] = $gratkaOffer;
             }
 
+            //array_merge($this->offersAsIdsArray, $temp);
             $currentPage += 1;
         }
+        echo '<br>';
+        var_dump(count($this->offersAsIdsArray));
+        echo '<br>';
 
         return $this->offersAsObjectsArray;
     }
@@ -264,7 +262,8 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
      * @param \DOMDocument $liDom
      * @return DomGratkaOffer
      */
-    public function createOfferFromSummary($liDom){
+    public function createOfferFromSummary($liDom)
+    {
         $gratkaOffer = new DomGratkaOffer();
 
         $summary = $this->domX->query(".//div/div/p", $liDom)->item(0)->textContent;
@@ -275,10 +274,6 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
         $price = str_replace(" ", "", $price);
         $price = floatval($price);
         $gratkaOffer->setPrice($price);
-
-        $offerType = $this->domX->query(".//div/em", $liDom)->item(0)->textContent;
-        $offerType = substr($offerType, 11);
-        $gratkaOffer->setOfferType($offerType);
 
         $title = $this->domX->query(".//div/h2", $liDom)->item(0)->textContent;
         $gratkaOffer->setTitle($title);
@@ -322,9 +317,11 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
         }
 
 
-        $area = $this->domX->query(".//div/div/p/span/b", $liDom)->item(0)->textContent;
-        $area = floatval(str_replace(",", ".",$area));
-        $gratkaOffer->setArea($area);
+        $area = $this->domX->query(".//div/div/p/span/b", $liDom)->item(0);
+        if($area !== null){
+            $area = floatval(str_replace(",", ".",$area->textContent));
+            $gratkaOffer->setArea($area);
+        }
 
         if(strpos($summary, "dopłata") !== false){
             $surcharge = $this->domX->query(".//div/div/p/span/b", $liDom)->item(1)->textContent;
@@ -333,6 +330,14 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
 
         $description = $this->domX->query(".//div/div/p", $liDom)->item(1)->textContent;
         $gratkaOffer->setDescription($description);
+
+        $offerType = $this->domX->query(".//div/em", $liDom)->item(0)->textContent;
+        $offerType = substr($offerType, 11);
+        $gratkaOffer->setOfferType($offerType);
+
+        $gratkaOffer->setAddedBy($this->addedBy);
+        $gratkaOffer->setLocalization($this->localization);
+        $gratkaOffer->setBuildingType($this->buildingType);
 
         //var_dump($checking);
 

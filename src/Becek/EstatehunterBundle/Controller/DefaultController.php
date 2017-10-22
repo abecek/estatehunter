@@ -202,18 +202,17 @@ class DefaultController extends Controller
             'label' => 'Wybierz kategorię:',
             'attr' => array('class' => 'form-control'),
             'choices' => array(
-                'Mieszkania' => 'mieszkania',
-                'Domy' => 'domy',
-                'Działki i grunty' => 'dzialki-grunty',
-                'Lokale użytkowe' => 'lokale-obiekty',
+                'Mieszkania' => 'mieszkanie',
+                'Domy' => 'dom',
+                'Działki i grunty' => 'dzialka',
+                'Lokale użytkowe' => 'lokal',
             ),
         ))->add('offerType', ChoiceType::class, array(
             'label' => 'Rodzaj ogłoszenia:',
             'attr' => array('class' => 'form-control'),
             'choices' => array(
-                'na sprzedaż' => 'sprzedam',
-                'do wynajęcia' => 'do-wynajecia',
-                'inne oferty' => 'inne',
+                'na sprzedaż' => 'sprzedaz',
+                'do wynajęcia' => 'wynajem',
             ),
         ))->add('priceFrom', MoneyType::class, array(
             'label' => 'Cena od:',
