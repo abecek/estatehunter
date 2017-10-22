@@ -85,7 +85,7 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
 
 
         if($subregion == '') {
-            $localization = $region .','. $town .',';
+            $localization = $region .','. $town .',,';
         }
         else {
             $localization = $region .','. $town .','. $subregion .',';

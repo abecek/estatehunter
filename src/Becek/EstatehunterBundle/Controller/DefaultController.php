@@ -115,9 +115,9 @@ class DefaultController extends Controller
             $options['priceByAreaTo'] = $data['priceByAreaTo'];
             $options['areaFrom'] = $data['areaFrom'];
             $options['areaTo'] = $data['areaTo'];
-            $options['localization']['region'] = $data['localizationRegion'];
-            $options['localization']['subregion'] = $data['localizationSubregion'];
-            $options['localization']['town'] = $data['localizationTown'];
+            $options['localization']['subregion'] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $data['localizationSubregion']));
+            $options['localization']['region'] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $data['localizationRegion']));
+            $options['localization']['town'] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $data['localizationTown']));
             $options['addedBy'] = $data['addedBy'];
 
             $domGratkaGenerator = new DomGratkaGenerator();
@@ -165,7 +165,7 @@ class DefaultController extends Controller
         return $result;
     }
 
-    private function chaningPolishChars($string)
+    private function changingPolishChars($string)
     {
         $a = array( 'Ę', 'Ó', 'Ą', 'Ś', 'Ł', 'Ż', 'Ź', 'Ć', 'Ń', 'ę', 'ó', 'ą',
             'ś', 'ł', 'ż', 'ź', 'ć', 'ń' );
@@ -273,40 +273,38 @@ class DefaultController extends Controller
             $options['priceByAreaTo'] = $data['priceByAreaTo'];
             $options['areaFrom'] = $data['areaFrom'];
             $options['areaTo'] = $data['areaTo'];
-            $options['localization']['town'] = $data['localizationTown'];
-            $options['localization']['subregion'] = $data['localizationSubregion'];
-            $options['localization']['region'] = $data['localizationRegion'];
+            $options['localization']['town'] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $data['localizationTown']));
+            $options['localization']['subregion'] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $data['localizationSubregion']));
+            $options['localization']['region'] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $data['localizationRegion']));
             $options['addedBy'] = $data['addedBy'];
 
             //Getting CityId, RegionId, SubRegionId and level from otodom.pl
             $responseFromOtodom = json_decode($this->otodomRequestAction($options));
-
             $wantedLocalizationAsArray = array_values($options['localization']);
-            /*
-            var_dump($wantedLocalizationAsArray);
-            echo '<br><br>';
-            */
-            foreach($responseFromOtodom as $city){
-
-                $tempArray = explode(', ', strtolower($city->text));
-                $tempArray[0] = $this->chaningPolishChars(preg_replace('<<(.*?)>>', '', $tempArray[0]));
-                $tempArray[1] = $this->chaningPolishChars(preg_replace('<<(.*?)>>', '', $tempArray[1]));
-
-                if(isset($tempArray[2])) {
-                    $tempArray[2] = $this->chaningPolishChars(preg_replace('<<(.*?)>>', '', $tempArray[2]));
-                }
-                else{
-                    $temp = $tempArray[1];
-                    $tempArray[1] = null;
-                    $tempArray[2] = $temp;
-                }
 
 
-                if($wantedLocalizationAsArray == $tempArray){
-                    $options['cityId'] = $city->city_id;
-                    $options['subregionId'] = $city->subregion_id;
-                    $options['regionId'] = $city->region_id;
-                    $options['level'] = strtolower($city->level);
+            if(!empty($responseFromOtodom)){
+                foreach($responseFromOtodom as $city){
+                    $tempArray = explode(', ', strtolower($city->text));
+                    $tempArray[0] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $tempArray[0]));
+                    $tempArray[1] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $tempArray[1]));
+
+                    if(isset($tempArray[2])) {
+                        $tempArray[2] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $tempArray[2]));
+                    }
+                    else{
+                        $temp = $tempArray[1];
+                        $tempArray[1] = null;
+                        $tempArray[2] = $temp;
+                    }
+
+
+                    if($wantedLocalizationAsArray == $tempArray){
+                        $options['cityId'] = $city->city_id;
+                        $options['subregionId'] = $city->subregion_id;
+                        $options['regionId'] = $city->region_id;
+                        $options['level'] = strtolower($city->level);
+                    }
                 }
             }
 

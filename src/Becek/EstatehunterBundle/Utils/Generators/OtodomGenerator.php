@@ -167,37 +167,104 @@ class OtodomGenerator extends OfferGenerator implements OfferGeneratorInterface
             //$this->dom->preserveWhiteSpace = true;
             $this->domX = new \DOMXPath($this->dom);
 
-            if($currentPage == 1){
-                var_dump($this->domX->query('.//script')->item(0));
-            }
+            //if($currentPage == 1){
+            //    $scriptText = $this->domX->query('.//script')->item(2)->textContent;
+            //}
 
-
-            $allArticlesWithOffers = $this->dom->getElementsByTagName('article');
+            $allArticlesWithOffers = $this->domX->query('//div[@class="col-md-content"]/article');
+            //$allArticlesWithOffers = $this->dom->getElementsByTagName('article');
             //$articlesWithOffers = $this->domX->query('//article[contains(@class, "offer")]');
 
-            $temp = array();
             foreach($allArticlesWithOffers as $article){
-                $temp[] = $article;
+                $offerId = $article->attributes->item(1)->textContent;
+                if(!in_array($offerId, $this->offersAsIdsArray)){
+                    $this->offersAsIdsArray[] = $offerId;
+                }
             }
 
-
-
-            var_dump(count($temp));
-            exit;
-            $temp = array();
+            foreach($this->offersAsIdsArray as $id){
+                $article = $this->domX->query("//article[@data-item-id='". $id ."']")->item(0);
+                $otodomOffer = $this->createOfferFromSummary($article);
+                $this->offersAsObjectsArray[] = $otodomOffer;
+            }
 
             $currentPage += 1;
         }
 
-        exit;
+        return $this->offersAsObjectsArray;
     }
 
     /**
      * @param \DOMDocument $Dom
      * @return Offer
      */
-    public function createOfferFromSummary($Dom)
+    public function createOfferFromSummary($dom)
     {
-        // TODO: Implement createOfferFromSummary() method.
+        $tempHtml = $this->dom->saveHTML($dom);
+        $tempDom = new \DOMDocument();
+        $tempDom->loadHTML(mb_convert_encoding($tempHtml, 'HTML-ENTITIES', 'UTF-8'));
+        $tempDomX = new \DOMXPath($tempDom);
+
+
+        $otodomOffer = new OtodomOffer();
+        $roomsCount = $tempDomX->query('//ul/li')->item(0)->textContent;
+        $otodomOffer->setRoomCount(intval($roomsCount));
+
+        $price = $tempDomX->query('//ul/li')->item(1)->textContent;
+        $price = str_replace(" ", "", $price);
+        $price = floatval($price);
+        $otodomOffer->setPrice($price);
+
+        $area = $tempDomX->query('//ul/li')->item(2)->textContent;
+        $area = floatval(str_replace(",", ".",$area));
+        $otodomOffer->setArea($area);
+
+
+        $priceByArea = $tempDomX->query('//ul/li')->item(3)->textContent;
+        $priceByArea = floatval(str_replace(" ", "",$priceByArea));
+        $otodomOffer->setPriceByArea($priceByArea);
+
+        $data = null;
+        $rest = $tempDomX->query('//ul')->item(1);
+
+        $floorsCount = null;
+        if($rest != null){
+            $data = preg_split('/\s+/', $rest->textContent, -1, PREG_SPLIT_NO_EMPTY);
+
+            $checkFloor = array_search('parter', $data);
+            if($checkFloor != null){
+                $otodomOffer->setFloor(0);
+            }
+            else{
+                $checkFloor = array_search('Piętro', $data);
+                $otodomOffer->setFloor(intval($data[$checkFloor+1]));
+
+            }
+
+            $checkFloorCount = array_search('(z',$data);
+            if($checkFloorCount != null){
+                $otodomOffer->setFloorCount(intval($data[$checkFloorCount+1]));
+            }
+
+            $checkConstructionYear = array_search('r.', $data);
+            if($checkConstructionYear != null){
+                $otodomOffer->setConstructionYear(intval($data[$checkConstructionYear-1]));
+            }
+
+            $checkSource = array_search('Oferta', $data);
+            if($checkSource != null){
+                if($data[$checkSource+1] == 'prywatna') {
+                    $otodomOffer->setMarketSource('private person');
+                }
+                else{
+                    $otodomOffer->setMarketSource('other');
+                }
+            }
+        }
+
+        var_dump($otodomOffer);
+        echo '<br>';
+
+        return $otodomOffer;
     }
 }

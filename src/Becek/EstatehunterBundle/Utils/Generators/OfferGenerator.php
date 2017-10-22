@@ -43,7 +43,7 @@ abstract class OfferGenerator
     /**
      * @var
      */
-    protected $domx;
+    protected $domX;
 
     /**
      * @var string
@@ -179,17 +179,17 @@ abstract class OfferGenerator
     /**
      * @return mixed
      */
-    public function getDomx()
+    public function getDomX()
     {
-        return $this->domx;
+        return $this->domX;
     }
 
     /**
      * @param mixed $domx
      */
-    public function setDomx($domx)
+    public function setDomX($domx)
     {
-        $this->domx = $domx;
+        $this->domX = $domx;
     }
 
     /**
