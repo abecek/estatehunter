@@ -104,6 +104,10 @@ class OtodomGenerator extends OfferGenerator implements OfferGeneratorInterface
         $url .= 'search[subregion_id]='. $this->subregionId .'&';
         $url .= 'search[city_id]='. $this->cityId .'&';
 
+        if($currentPage != 1){
+            $url .= 'page=' . $currentPage;
+        }
+
 
         $url = rtrim($url, '?');
         $url = rtrim($url, '&');
@@ -152,28 +156,33 @@ class OtodomGenerator extends OfferGenerator implements OfferGeneratorInterface
     /**
      * @return Objects in array
      */
-    public function loadOffersFromPages($options){
+    public function loadOffersFromPages($options)
+    {
         $currentPage = 1;
         while($currentPage <= $this->pagesCount){
             $url = $this->prepareStringUrlWithOptions($options, $currentPage);
             var_dump($url);
-            echo "<br><br>";
+            echo "<br>";
 
-            $html = $this->getHtmlFromUrl($url);
-            $this->html = $html;
+            $this->html = $this->getHtmlFromUrl($url);
             $this->dom = new \DOMDocument();
             libxml_use_internal_errors(true);
-            $this->dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+            $this->dom->loadHTML(mb_convert_encoding($this->html, 'HTML-ENTITIES', 'UTF-8'));
             //$this->dom->preserveWhiteSpace = true;
             $this->domX = new \DOMXPath($this->dom);
 
-            //if($currentPage == 1){
-            //    $scriptText = $this->domX->query('.//script')->item(2)->textContent;
-            //}
+            if($currentPage == 1){
+                $pagesCount = $this->domX->query('//strong[@class="current"]')->item(0);
+                if($pagesCount !== null){
+                    $this->pagesCount = intval($pagesCount->textContent);
+                }
+                else{
+                    $this->pagesCount = 1;
+                }
+            }
 
             $allArticlesWithOffers = $this->domX->query('//div[@class="col-md-content"]/article');
             //$allArticlesWithOffers = $this->dom->getElementsByTagName('article');
-            //$articlesWithOffers = $this->domX->query('//article[contains(@class, "offer")]');
 
             foreach($allArticlesWithOffers as $article){
                 $offerId = $article->attributes->item(1)->textContent;
@@ -185,11 +194,13 @@ class OtodomGenerator extends OfferGenerator implements OfferGeneratorInterface
             foreach($this->offersAsIdsArray as $id){
                 $article = $this->domX->query("//article[@data-item-id='". $id ."']")->item(0);
                 $otodomOffer = $this->createOfferFromSummary($article);
-                $this->offersAsObjectsArray[] = $otodomOffer;
+                $this->offersAsObjectsArray[$id] = $otodomOffer;
             }
 
             $currentPage += 1;
         }
+
+        echo '<br>';
 
         return $this->offersAsObjectsArray;
     }
@@ -200,32 +211,34 @@ class OtodomGenerator extends OfferGenerator implements OfferGeneratorInterface
      */
     public function createOfferFromSummary($dom)
     {
-        $tempHtml = $this->dom->saveHTML($dom);
-        $tempDom = new \DOMDocument();
-        $tempDom->loadHTML(mb_convert_encoding($tempHtml, 'HTML-ENTITIES', 'UTF-8'));
-        $tempDomX = new \DOMXPath($tempDom);
-
-
         $otodomOffer = new OtodomOffer();
-        $roomsCount = $tempDomX->query('//ul/li')->item(0)->textContent;
+
+        $html = $this->dom->saveHTML($dom);
+        //BUG!! still same html/article/dom
+        var_dump($html);
+
+        $this->dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+        $this->domX = new \DOMXPath($this->dom);
+
+        $roomsCount = $this->domX->query('//ul/li')->item(0)->textContent;
         $otodomOffer->setRoomCount(intval($roomsCount));
 
-        $price = $tempDomX->query('//ul/li')->item(1)->textContent;
+        $price = $this->domX->query('//ul/li')->item(1)->textContent;
         $price = str_replace(" ", "", $price);
         $price = floatval($price);
         $otodomOffer->setPrice($price);
 
-        $area = $tempDomX->query('//ul/li')->item(2)->textContent;
+        $area = $this->domX->query('//ul/li')->item(2)->textContent;
         $area = floatval(str_replace(",", ".",$area));
         $otodomOffer->setArea($area);
 
 
-        $priceByArea = $tempDomX->query('//ul/li')->item(3)->textContent;
+        $priceByArea = $this->domX->query('//ul/li')->item(3)->textContent;
         $priceByArea = floatval(str_replace(" ", "",$priceByArea));
         $otodomOffer->setPriceByArea($priceByArea);
 
         $data = null;
-        $rest = $tempDomX->query('//ul')->item(1);
+        $rest = $this->domX->query('//ul')->item(1);
 
         $floorsCount = null;
         if($rest != null){
@@ -262,8 +275,8 @@ class OtodomGenerator extends OfferGenerator implements OfferGeneratorInterface
             }
         }
 
-        var_dump($otodomOffer);
-        echo '<br>';
+        //var_dump($otodomOffer);
+        //echo '<br>';
 
         return $otodomOffer;
     }

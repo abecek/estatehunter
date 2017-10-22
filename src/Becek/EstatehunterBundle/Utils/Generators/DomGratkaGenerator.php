@@ -230,7 +230,6 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
             echo "<br>";
 
             $html = $this->getHtmlFromUrl($url);
-            $this->html = $html;
             $this->dom = new \DOMDocument();
             libxml_use_internal_errors(true);
             $this->dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
@@ -252,7 +251,7 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
             foreach($temp as $id) {
                 $liDom = $this->dom->getElementById($id);
                 $gratkaOffer = $this->createOfferFromSummary($liDom);
-                $this->offersAsObjectsArray[] = $gratkaOffer;
+                $this->offersAsObjectsArray[$id] = $gratkaOffer;
             }
 
             $currentPage += 1;
@@ -283,7 +282,6 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
 
         $title = $this->domX->query(".//div/h2", $liDom)->item(0)->textContent;
         $gratkaOffer->setTitle($title);
-
 
         $roomCount = $this->domX->query(".//div/div/p/span", $liDom)->item(0)->textContent;
         $roomCount = intval($roomCount);
