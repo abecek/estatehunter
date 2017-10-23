@@ -46,6 +46,11 @@ abstract class BaseOffer
     protected $area;
 
     /**
+     * @var float
+     */
+    protected $groundArea;
+
+    /**
      * @var integer
      */
     protected $constructionYear;
@@ -84,6 +89,11 @@ abstract class BaseOffer
      * @var string
      */
     protected $buildingType;
+
+    /**
+     * @var string
+     */
+    protected $category;
 
     /**
      * @var Datetime
@@ -190,6 +200,23 @@ abstract class BaseOffer
     {
         $this->area = $area;
     }
+
+    /**
+     * @return float
+     */
+    public function getGroundArea()
+    {
+        return $this->groundArea;
+    }
+
+    /**
+     * @param float $groundArea
+     */
+    public function setGroundArea($groundArea)
+    {
+        $this->groundArea = $groundArea;
+    }
+
 
     /**
      * @return int
@@ -317,6 +344,22 @@ abstract class BaseOffer
     public function setBuildingType($buildingType)
     {
         $this->buildingType = $buildingType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param string $category
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
     }
 
     /**

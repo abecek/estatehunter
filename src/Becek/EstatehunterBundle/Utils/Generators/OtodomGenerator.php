@@ -38,7 +38,7 @@ class OtodomGenerator extends OfferGenerator implements OfferGeneratorInterface
     /**
      * @var int
      */
-    protected static $offersPerPage = 24;
+    protected static $offersPerPage = 72;
 
     /**
      * @var int|null
@@ -65,8 +65,8 @@ class OtodomGenerator extends OfferGenerator implements OfferGeneratorInterface
      */
     public function prepareStringUrlWithOptions($options, $currentPage = 1)
     {
-        if(is_array($options) && !empty($options)){
-            isset($options['buildingType']) ? $this->buildingType = $options['buildingType'] : null;
+        if(is_array($options) && !empty($options)) {
+            isset($options['category']) ? $this->category = $options['category'] : null;
             isset($options['offerType']) ? $this->offerType = $options['offerType'] : null;
             isset($options['priceFrom']) ? $this->priceFrom = $options['priceFrom'] : null;
             isset($options['priceTo']) ? $this->priceTo = $options['priceTo'] : null;
@@ -86,8 +86,7 @@ class OtodomGenerator extends OfferGenerator implements OfferGeneratorInterface
         $region = isset($options['localization']['region']) ? $options['localization']['region'] : '';
         $subregion =  $options['localization']['subregion'];
 
-
-        $url = 'https://www.otodom.pl/'. $this->offerType .'/'. $this->buildingType .'/';
+        $url = 'https://www.otodom.pl/'. $this->offerType .'/'. $this->category .'/';
         if($this->cityId != '') {
             $url .= $town .'_'. $this->cityId .'/?';
         }
@@ -97,8 +96,12 @@ class OtodomGenerator extends OfferGenerator implements OfferGeneratorInterface
 
         if($this->priceFrom !== null) $url .= 'search[filter_float_price:from]='. $this->priceFrom .'&';
         if($this->priceTo !== null) $url .= 'search[filter_float_price:to]='. $this->priceTo .'&';
-        if($this->priceByAreaFrom !== null) $url .= 'search[filter_float_price_per_m:from]='. $this->priceByAreaFrom .'&';
-        if($this->priceByAreaTo !== null) $url .= 'search[filter_float_price_per_m:to]='. $this->priceByAreaTo .'&';
+
+        if($this->offerType == 'sprzedaz') {
+            if($this->priceByAreaFrom !== null) $url .= 'search[filter_float_price_per_m:from]='. $this->priceByAreaFrom .'&';
+            if($this->priceByAreaTo !== null) $url .= 'search[filter_float_price_per_m:to]='. $this->priceByAreaTo .'&';
+        }
+
         if($this->areaFrom !== null) $url .= 'search[filter_float_m:from]='. $this->areaFrom .'&';
         if($this->areaTo !== null) $url .= 'search[filter_float_m:to]='. $this->areaTo .'&';
 
@@ -110,7 +113,8 @@ class OtodomGenerator extends OfferGenerator implements OfferGeneratorInterface
         $url .= 'search[subregion_id]='. $this->subregionId .'&';
         $url .= 'search[city_id]='. $this->cityId .'&';
 
-        if($currentPage != 1){
+        $url .= '&nrAdsPerPage='. $this->getOffersPerPage() .'&';
+        if($currentPage != 1) {
             $url .= 'page=' . $currentPage;
         }
 
@@ -132,7 +136,6 @@ class OtodomGenerator extends OfferGenerator implements OfferGeneratorInterface
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-
         curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
@@ -163,10 +166,11 @@ class OtodomGenerator extends OfferGenerator implements OfferGeneratorInterface
     public function loadOffersFromPages($options)
     {
         $currentPage = 1;
-        while($currentPage <= $this->pagesCount){
+        while($currentPage <= $this->pagesCount) {
+
             $url = $this->prepareStringUrlWithOptions($options, $currentPage);
             var_dump($url);
-            echo "<br>";
+            echo "<br><br>";
 
             $this->html = $this->getHtmlFromUrl($url);
             $this->dom = new \DOMDocument();
@@ -175,9 +179,9 @@ class OtodomGenerator extends OfferGenerator implements OfferGeneratorInterface
             //$this->dom->preserveWhiteSpace = true;
             $this->domX = new \DOMXPath($this->dom);
 
-            if($currentPage == 1){
+            if($currentPage == 1) {
                 $pagesCount = $this->domX->query('//strong[@class="current"]')->item(0);
-                if($pagesCount !== null){
+                if($pagesCount !== null) {
                     $this->pagesCount = intval($pagesCount->textContent);
                 }
                 else{
@@ -186,17 +190,16 @@ class OtodomGenerator extends OfferGenerator implements OfferGeneratorInterface
             }
 
             $allArticlesWithOffers = $this->domX->query('//div[@class="col-md-content"]/article');
-            //$allArticlesWithOffers = $this->dom->getElementsByTagName('article');
 
             $temp = array();
             foreach($allArticlesWithOffers as $article){
                 $offerId = $article->attributes->item(1)->textContent;
-                if(!in_array($offerId, $temp)){
+                if(!in_array($offerId, $temp)) {
                     $temp[] = $offerId;
                 }
             }
 
-            foreach($temp as $id){
+            foreach($temp as $id) {
                 $otodomOffer = $this->createOfferFromSummary($id);
                 $this->offersAsObjectsArray[$id] = $otodomOffer;
             }
@@ -218,71 +221,173 @@ class OtodomGenerator extends OfferGenerator implements OfferGeneratorInterface
         //$id = $dom->getAttribute('data-item-id');
         $dom = $this->domX->query("//article[@data-item-id='". $id ."']")->item(0);
 
-        if($dom !== null){
+        if($dom !== null) {
             $otodomOffer->setIdOffer($id);
-            $title = $this->domX->query("//article[@data-item-id='". $id ."']/div/header/h3/a/span/span")->item(0)->textContent;
-            $otodomOffer->setTitle($title);
+            $title = $this->domX->query("//article[@data-item-id='". $id ."']/div/header/h3/a/span/span")->item(0);
+            if($title !== null) {
+                $title = $title->textContent;
+                $otodomOffer->setTitle($title);
+            }
 
             $summary = $dom->textContent;
             $summary = strtolower($summary);
             $otodomOffer->setShortDescription($summary);
 
-            $roomsCount = $this->domX->query("//article[@data-item-id='". $id ."']/div/ul/li")->item(0)->textContent;
-            $otodomOffer->setRoomCount(intval($roomsCount));
+            $roomsCount = $this->domX->query("//article[@data-item-id='". $id ."']/div/ul/li")->item(0);
+            if($roomsCount !== null) {
+                $roomsCount = $roomsCount->textContent;
+                if($roomsCount == '>10 pokoi') {
+                    $otodomOffer->setRoomCount(10);
+                }
+                else {
+                    $otodomOffer->setRoomCount(intval($roomsCount));
+                }
+            }
 
-            $price = $this->domX->query("//article[@data-item-id='". $id ."']/div/ul/li")->item(1)->textContent;
-            $price = str_replace(" ", "", $price);
-            $price = floatval($price);
-            $otodomOffer->setPrice($price);
+            $price = $this->domX->query("//article[@data-item-id='". $id ."']/div/ul/li")->item(1);
+            if($price !== null) {
+                $price = $price->textContent;
+                $price = str_replace(" ", "", $price);
+                $price = floatval($price);
+                $otodomOffer->setPrice($price);
+            }
 
-            $area = $this->domX->query("//article[@data-item-id='". $id ."']/div/ul/li")->item(2)->textContent;
-            $area = floatval(str_replace(",", ".",$area));
-            $otodomOffer->setArea($area);
+            $area = $this->domX->query("//article[@data-item-id='". $id ."']/div/ul/li")->item(2);
+            if($area !== null) {
+                $area = $area->textContent;
+                $area = floatval(str_replace(",", ".", $area));
+                $otodomOffer->setArea($area);
+                if($this->category === 'dom' && $area != 0 && $this->offerType != 'wynajem') {
+                    $priceByHouseArea = $otodomOffer->getPrice() / $area;
+                    $otodomOffer->setPriceByArea(round($priceByHouseArea, 2));
+                }
+            }
 
-            $priceByArea = $this->domX->query("//article[@data-item-id='". $id ."']/div/ul/li")->item(3)->textContent;
-            $priceByArea = str_replace(",", ".",$priceByArea);
-            $priceByArea = floatval(str_replace(" ", "",$priceByArea));
-            $otodomOffer->setPriceByArea($priceByArea);
+            if($this->category === 'mieszkanie') {
+                $priceByArea = $this->domX->query("//article[@data-item-id='". $id ."']/div/ul/li")->item(3);
+                if($priceByArea !== null && $this->offerType != 'wynajem') {
+                    $priceByArea = $priceByArea->textContent;
+                    $priceByArea = str_replace(",", ".", $priceByArea);
+                    $priceByArea = floatval(str_replace(" ", "", $priceByArea));
+                    $otodomOffer->setPriceByArea($priceByArea);
+                }
+            }
+            elseif($this->category === 'dom') {
+                $groundArea = $this->domX->query("//article[@data-item-id='". $id ."']/div/ul/li")->item(3);
+                if($groundArea !== null) {
+                    $groundArea = $groundArea->textContent;
+                    $groundArea = str_replace("działka", "", $groundArea);
+                    //$groundArea = floatval(str_replace("m²", "", $groundArea));
+                    $groundArea = str_replace(" ", "", $groundArea);
+                    $otodomOffer->setGroundArea(floatval($groundArea));
+                }
+            }
 
             $data = null;
-            $rest = $this->domX->query("//article[@data-item-id='". $id ."']/div/ul")->item(2);
+            $rest = $this->domX->query("//article[@data-item-id='". $id ."']/div[@class='offer-item-details-bottom']/ul")->item(0);
 
-            if($rest === null){
+            if($rest === null) {
                 $rest = $this->domX->query("//article[@data-item-id='". $id ."']/div/ul")->item(1);
+                echo 'KABUMM';
             }
-            $floorsCount = null;
-            if($rest !== null){
+
+            if($rest !== null) {
                 $data = preg_split('/\s+/', $rest->textContent, -1, PREG_SPLIT_NO_EMPTY);
-
-                $checkFloor = array_search('parter', $data);
-                if($checkFloor != null){
-                    $otodomOffer->setFloor(0);
+                //$data = explode(" ", $rest->textContent);
+                /*
+                //var_dump($rest->textContent);
+                if(count($data) >= 8){
+                   // var_dump($rest->textContent);
+                    //echo '<br>';
+                    //var_dump($data);
+                    //echo '<br><br>';
                 }
-                else{
-                    $checkFloor = array_search('Piętro', $data);
-                    $otodomOffer->setFloor(intval($data[$checkFloor+1]));
+                */
 
+                //FLATS
+                if($this->category === 'mieszkanie') {
+                    $checkFloor = array_search('parter', $data);
+                    if($checkFloor !== false) {
+                        $otodomOffer->setFloor(0);
+                    }
+                    else{
+                        $checkFloor = array_search('Piętro', $data);
+                        if(is_numeric($checkFloor)) {
+                            $otodomOffer->setFloor(intval($data[$checkFloor+1]));
+                        }
+                    }
+
+                    $temp = array('blok', 'apartamentowiec', 'loft', 'kamienica', 'szeregowiec');
+                    foreach($temp as $item){
+                        $check = $this->isStringInArrays($data, $item);
+                        if($check !== false){
+                            $otodomOffer->setBuildingType($item);
+                        }
+                    }
+
+                    $checkFloorCount = array_search('(z',$data);
+                    if($checkFloorCount !== false) {
+                        $otodomOffer->setFloorCount(intval($data[$checkFloorCount+1]));
+                    }
+
+                    $checkConstructionYear = array_search('r.', $data);
+                    if($checkConstructionYear !== false) {
+                        $otodomOffer->setConstructionYear(intval($data[$checkConstructionYear-1]));
+                    }
+                }
+                //HOUSES
+                elseif($this->category === 'dom') {
+                    $checkFloorCount = strpos($data[0], 'parterowy');
+                    if($checkFloorCount !== false) {
+                        //one floor
+                        $otodomOffer->setFloorCount(1);
+                    }
+                    else {
+                        //more floors
+                        if(isset($data[1])) {
+                            $checkFloorCount = strpos($data[1], 'piętr');
+                            if($checkFloorCount !== false) {
+                                $otodomOffer->setFloorCount(intval($data[0])+1);
+                            }
+                        }
+                        /*
+                         * debugging
+                        else{
+                            $flag = true;
+                            var_dump($data);
+                            echo '<br>';
+                        }
+                        */
+                    }
+
+                    $temp = array('wolnostojący', 'szeregowiec', 'bliźniak', 'kamienica', 'dworek/pałac', 'gospodarstwo');
+                    foreach($temp as $item){
+                        $check = $this->isStringInArrays($data, $item);
+                        if($check !== false){
+                            $otodomOffer->setBuildingType($item);
+                        }
+                    }
+
+                    $temp = array('cegła', 'drewno', 'pustak', 'keramzyt', 'wielka płyta', 'beton', 'silikat', 'beton komórkowy', 'inne');
+                    foreach($temp as $item){
+                        $check = $this->isStringInArrays($data, $item);
+                        if($check !== false){
+                            $otodomOffer->setConstructionMaterial($item);
+                        }
+                    }
                 }
 
-                $checkFloorCount = array_search('(z',$data);
-                if($checkFloorCount != null){
-                    $otodomOffer->setFloorCount(intval($data[$checkFloorCount+1]));
+                $otodomOffer->setAddedBy($this->addedBy);
+                $addedByCheck = strpos($rest->textContent, 'prywatna');
+                if($addedByCheck !== false){
+                    $otodomOffer->setAddedBy('private person');
                 }
-
-                $checkConstructionYear = array_search('r.', $data);
-                if($checkConstructionYear != null){
-                    $otodomOffer->setConstructionYear(intval($data[$checkConstructionYear-1]));
-                }
-
             }
 
             $otodomOffer->setOfferType($this->offerType);
-            $otodomOffer->setAddedBy($this->addedBy);
             $otodomOffer->setLocalization($this->localization);
-            $otodomOffer->setBuildingType($this->buildingType);
+            $otodomOffer->setCategory($this->category);
 
-            //var_dump($otodomOffer);
-            //echo '<br>';
         }
 
         return $otodomOffer;

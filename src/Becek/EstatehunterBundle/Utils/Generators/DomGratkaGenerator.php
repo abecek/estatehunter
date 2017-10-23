@@ -47,7 +47,7 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
      */
     public function prepareStringUrlWithOptions($options, $currentPage = 1){
         if(is_array($options) && !empty($options)){
-            isset($options['buildingType']) ? $this->buildingType = $options['buildingType'] : null;
+            isset($options['category']) ? $this->category = $options['category'] : null;
             isset($options['offerType']) ? $this->offerType = $options['offerType'] : null;
 
             isset($options['priceFrom']) ? $this->priceFrom = $options['priceFrom'] : null;
@@ -60,7 +60,7 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
             isset($options['addedBy']) ? $this->addedBy = $options['addedBy'] : $this->addedBy = null;
         }
 
-        if($this->buildingType == 'dzialki-grunty' && $this->offerType == 'do-wynajecia'){
+        if($this->category == 'dzialki-grunty' && $this->offerType == 'do-wynajecia'){
             $this->offerType = 'do-wydzierzawienia';
         }
 
@@ -85,7 +85,7 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
             $localization = $region .','. $town .','. $subregion .',';
         }
 
-        $url = 'http://dom.gratka.pl/'. $this->buildingType .'-'. $this->offerType .'/lista/'. $localization;
+        $url = 'http://dom.gratka.pl/'. $this->category .'-'. $this->offerType .'/lista/'. $localization;
 
 
         if($this->priceFrom !== null){
@@ -337,7 +337,7 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
 
         $gratkaOffer->setAddedBy($this->addedBy);
         $gratkaOffer->setLocalization($this->localization);
-        $gratkaOffer->setBuildingType($this->buildingType);
+        $gratkaOffer->setCategory($this->category);
 
         //var_dump($checking);
 

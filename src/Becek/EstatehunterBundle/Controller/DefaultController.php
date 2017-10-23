@@ -25,14 +25,14 @@ class DefaultController extends Controller
     {
         $form = $this->createFormBuilder(null, array(
             'attr' => array('class' => 'form'),
-        ))->add('buildingType', ChoiceType::class, array(
+        ))->add('category', ChoiceType::class, array(
             'label' => 'Wybierz kategorię:',
             'attr' => array('class' => 'form-control'),
             'choices' => array(
                 'Mieszkania' => 'mieszkania',
                 'Domy' => 'domy',
-                'Działki i grunty' => 'dzialki-grunty',
-                'Lokale użytkowe' => 'lokale-obiekty',
+            //    'Działki i grunty' => 'dzialki-grunty',
+            //    'Lokale użytkowe' => 'lokale-obiekty',
             ),
         ))->add('offerType', ChoiceType::class, array(
             'label' => 'Rodzaj ogłoszenia:',
@@ -40,7 +40,7 @@ class DefaultController extends Controller
             'choices' => array(
                 'na sprzedaż' => 'sprzedam',
                 'do wynajęcia' => 'do-wynajecia',
-                'inne oferty' => 'inne',
+            //    'inne oferty' => 'inne',
             ),
         ))->add('priceFrom', MoneyType::class, array(
             'label' => 'Cena od:',
@@ -107,7 +107,7 @@ class DefaultController extends Controller
             $data = $form->getData();
 
             $options = array();
-            $options['buildingType'] = $data['buildingType'];
+            $options['category'] = $data['category'];
             $options['offerType'] = $data['offerType'];
             $options['priceFrom'] = $data['priceFrom'];
             $options['priceTo'] = $data['priceTo'];
@@ -198,14 +198,14 @@ class DefaultController extends Controller
             'label' => 'Lokalizacja(powiat):',
             'required'   => false,
             'attr' => array('class' => 'form-control')
-        ))->add('buildingType', ChoiceType::class, array(
+        ))->add('category', ChoiceType::class, array(
             'label' => 'Wybierz kategorię:',
             'attr' => array('class' => 'form-control'),
             'choices' => array(
                 'Mieszkania' => 'mieszkanie',
                 'Domy' => 'dom',
-                'Działki i grunty' => 'dzialka',
-                'Lokale użytkowe' => 'lokal',
+             //   'Działki i grunty' => 'dzialka',
+             //   'Lokale użytkowe' => 'lokal',
             ),
         ))->add('offerType', ChoiceType::class, array(
             'label' => 'Rodzaj ogłoszenia:',
@@ -264,7 +264,7 @@ class DefaultController extends Controller
             $data = $form->getData();
 
             $options = array();
-            $options['buildingType'] = $data['buildingType'];
+            $options['category'] = $data['category'];
             $options['offerType'] = $data['offerType'];
             $options['priceFrom'] = $data['priceFrom'];
             $options['priceTo'] = $data['priceTo'];
@@ -281,7 +281,6 @@ class DefaultController extends Controller
             $responseFromOtodom = json_decode($this->otodomRequestAction($options));
             $wantedLocalizationAsArray = array_values($options['localization']);
 
-
             if(!empty($responseFromOtodom)){
                 foreach($responseFromOtodom as $city){
                     $tempArray = explode(', ', strtolower($city->text));
@@ -297,7 +296,6 @@ class DefaultController extends Controller
                         $tempArray[2] = $temp;
                     }
 
-
                     if($wantedLocalizationAsArray == $tempArray){
                         $options['cityId'] = $city->city_id;
                         $options['subregionId'] = $city->subregion_id;
@@ -309,7 +307,6 @@ class DefaultController extends Controller
 
             $otodomGenerator = new OtodomGenerator();
             $offers = $otodomGenerator->loadOffersFromPages($options);
-
         }
 
         return $this->render("@BecekEstatehunter/Default/otodom.html.twig", array(
@@ -323,7 +320,6 @@ class DefaultController extends Controller
 
     public function getOutputAction(Request $request)
     {
-
         return $this->render("@BecekEstatehunter/Default/index.html.twig", array(
 
         ));

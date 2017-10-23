@@ -48,7 +48,7 @@ abstract class OfferGenerator
     /**
      * @var string
      */
-    protected $buildingType;
+    protected $category;
 
     /**
      * @var string
@@ -94,6 +94,50 @@ abstract class OfferGenerator
      * @var string
      */
     protected $addedBy;
+
+    /**
+     * @param array $array
+     * @param string $string
+     * @return bool|int
+     */
+    public function isStringInArrays($array, $string){
+        if(empty($array)) return false;
+
+        for($i = 0; $i < count($array); $i++){
+            if(is_array($array[$i])){
+                $flag = $this->isStringInArray($array[$i], $string);
+                if(is_numeric($flag)) return $i;
+            }
+            if(is_string($array[$i])){
+                $checkpos = strpos($array[$i], $string);
+                if($checkpos !== false){
+                    return $i;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param array $array
+     * @param string $string
+     * @return bool|int
+     */
+    public function isStringInArray($array, $string){
+        if(empty($array)) return false;
+
+        for($i = 0; $i < count($array); $i++){
+            if(is_string($array[$i])){
+                $checkpos = strpos($array[$i], $string);
+                if($checkpos !== false){
+                    return $i;
+                }
+            }
+        }
+
+        return false;
+    }
 
 
     /**
