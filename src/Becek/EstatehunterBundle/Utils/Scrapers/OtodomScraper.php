@@ -6,14 +6,16 @@
  * Time: 19:17
  */
 
-namespace Becek\EstatehunterBundle\Utils\Generators;
+namespace Becek\EstatehunterBundle\Utils\Scrapers;
 
-use Symfony\Component\Filesystem\Filesystem;
-use Becek\EstatehunterBundle\Utils\Generators\OfferGenerator;
 use Becek\EstatehunterBundle\Utils\Interfaces\OfferGeneratorInterface;
 use Becek\EstatehunterBundle\Utils\OtodomOffer;
 
-class OtodomGenerator extends OfferGenerator implements OfferGeneratorInterface
+/**
+ * Class OtodomScraper
+ * @package Becek\EstatehunterBundle\Utils\Scrapers
+ */
+class OtodomScraper extends OfferScraperAbstract implements OfferGeneratorInterface
 {
     /**
      * @var int

@@ -6,16 +6,16 @@
  * Time: 01:11
  */
 
-namespace Becek\EstatehunterBundle\Utils\Generators;
+namespace Becek\EstatehunterBundle\Utils\Scrapers;
 
 use Becek\EstatehunterBundle\Utils\Interfaces\OfferGeneratorInterface;
 use Becek\EstatehunterBundle\Utils\DomGratkaOffer;
 
 /**
- * Class DomGratkaGenerator
- * @package Becek\EstatehunterBundle\Utils
+ * Class DomGratkaScraper
+ * @package Becek\EstatehunterBundle\Utils\Scrapers
  */
-class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterface
+class DomGratkaScraper extends OfferScraperAbstract implements OfferGeneratorInterface
 {
     /**
      * @var int
@@ -49,23 +49,23 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
         if(is_array($options) && !empty($options)){
             isset($options['category']) ? $this->category = $options['category'] : null;
             isset($options['offerType']) ? $this->offerType = $options['offerType'] : null;
-
             isset($options['priceFrom']) ? $this->priceFrom = $options['priceFrom'] : null;
             isset($options['priceTo']) ? $this->priceTo = $options['priceTo'] : null;
-            isset($options['priceByAreaFrom']) ? $this->priceByAreaFrom = $options['priceByAreaFrom'] : null;
-            isset($options['priceByAreaTo']) ? $this->priceByAreaTo = $options['priceByAreaTo'] : null;
+            if($this->offerType != 'do-wynajecia') {
+                isset($options['priceByAreaFrom']) ? $this->priceByAreaFrom = $options['priceByAreaFrom'] : null;
+                isset($options['priceByAreaTo']) ? $this->priceByAreaTo = $options['priceByAreaTo'] : null;
+            }
             isset($options['areaFrom']) ? $this->areaFrom = $options['areaFrom'] : null;
             isset($options['areaTo']) ? $this->areaTo = $options['areaTo'] : null;
             isset($options['localization']) ? $this->localization = $options['localization'] : null;
             isset($options['addedBy']) ? $this->addedBy = $options['addedBy'] : $this->addedBy = null;
         }
 
-        if($this->category == 'dzialki-grunty' && $this->offerType == 'do-wynajecia'){
+        if($this->category == 'dzialki-grunty' && $this->offerType == 'do-wynajecia') {
             $this->offerType = 'do-wydzierzawienia';
         }
 
         $region = isset($options['localization']['region']) ? $options['localization']['region'] : '';
-
         $town = isset($options['localization']['town']) ? $options['localization']['town'] : '';
 
         $isSubRegion = false;
@@ -87,11 +87,10 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
 
         $url = 'http://dom.gratka.pl/'. $this->category .'-'. $this->offerType .'/lista/'. $localization;
 
-
-        if($this->priceFrom !== null){
+        if($this->priceFrom !== null) {
             $url .= $this->priceFrom .',';
         }
-        if($this->priceTo !== null){
+        if($this->priceTo !== null) {
             $url .= $this->priceTo .',';
         }
 
@@ -111,6 +110,7 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
         if($this->priceByAreaTo !== null){
             $url .= $this->priceByAreaTo .',';
         }
+
         if($this->areaFrom !== null){
             $url .= $this->areaFrom .',';
         }
@@ -245,7 +245,8 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
             foreach($temp as $id) {
                 $liDom = $this->dom->getElementById($id);
                 $gratkaOffer = $this->createOfferFromSummary($liDom);
-                $this->offersAsObjectsArray[$id] = $gratkaOffer;
+                $id = explode('-', $id);
+                $this->offersAsObjectsArray[$id[2]] = $gratkaOffer;
             }
 
             //array_merge($this->offersAsIdsArray, $temp);
@@ -265,6 +266,9 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
     public function createOfferFromSummary($liDom)
     {
         $gratkaOffer = new DomGratkaOffer();
+        $id = $liDom->getAttribute('id');
+        $id = explode('-', $id);
+        $gratkaOffer->setIdOffer($id[2]);
 
         $summary = $this->domX->query(".//div/div/p", $liDom)->item(0)->textContent;
         $summary = strtolower($summary);
@@ -283,39 +287,66 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
         $gratkaOffer->setRoomCount($roomCount);
 
 
-        $i = 0;
-        if(strpos($summary, "parter") !== false) {
-            $floor = 0;
-            $i -= 1;
+        $temp = explode(', ', $summary);
+        /*
+        var_dump($temp);
+        echo '<br>';
+        */
+
+        $floor = null;
+        $floorCount = null;
+        if($this->category != 'domy') {
+            $pos = $this->isStringInArray($temp, 'parter');
+            if($pos !== false) {
+                $floor = 0;
+            }
+
+            $pos = $this->isStringInArray($temp, 'piętro');
+            if($pos !== false) {
+                $floors = explode(' ',$temp[$pos]);
+                $floor = intval($floors[0]);
+                $floorCount = $floors[1];
+                $floorCount = substr($floorCount, 3);
+                $gratkaOffer->setFloorCount(intval($floorCount));
+            }
+            $gratkaOffer->setFloor($floor);
         }
         else {
-            $floor = $this->domX->query(".//div/div/p/span", $liDom)->item(1)->textContent;
-            $floor = intval($floor);
+            $pos = $this->isStringInArray($temp, 'parterowy');
+            if($pos !== false) {
+                $gratkaOffer->setFloorCount(0);
+            }
 
-            $pos = strpos($summary, "piętro z");
-            $pos += 11;
-            $floorCount = substr($summary, $pos, 2);
-            $floorCount = intval($floorCount);
-            $gratkaOffer->setFloorCount($floorCount);
+            $pos = $this->isStringInArray($temp, 'piętrowy');
+            if($pos !== false) {
+                $floorCount = $temp[$pos];
+                $floorCount = intval($floorCount);
+                $gratkaOffer->setFloorCount($floorCount);
+            }
         }
-        $gratkaOffer->setFloor($floor);
 
 
-        if(strpos($summary, "budowy") !== false){
-            $constructionYear = $this->domX->query(".//div/div/p/span", $liDom)->item(2 + $i)->textContent;
+        $pos = $this->isStringInArray($temp, 'rok');
+        if($pos !== false) {
+            $constructionYear = $temp[$pos];
             $constructionYear = intval($constructionYear);
             $gratkaOffer->setConstructionYear($constructionYear);
-            $i += 1;
         }
 
-        //DODAC OBSLUGE DZIALEK
-        if(strpos($summary, "zł/m2") !== false){
-            $priceByArea = $this->domX->query(".//div/div/p/span", $liDom)->item(2 + $i)->textContent;
-            $priceByArea .= $this->domX->query(".//div/div/p/span", $liDom)->item(3 + $i)->textContent;
+        $pos = $this->isStringInArray($temp, 'działki');
+        if($pos !== false) {
+            $groundArea = $temp[$pos];
+            $groundArea = floatval($groundArea);
+            $gratkaOffer->setGroundArea($groundArea);
+        }
+
+        $pos = $this->isStringInArray($temp, 'zł/m2');
+        if($pos !== false) {
+            $priceByArea = $temp[$pos];
+            $priceByArea = str_replace(' ', '', $priceByArea);
             $priceByArea = floatval($priceByArea);
             $gratkaOffer->setPriceByArea($priceByArea);
         }
-
 
         $area = $this->domX->query(".//div/div/p/span/b", $liDom)->item(0);
         if($area !== null){
@@ -323,16 +354,27 @@ class DomGratkaGenerator extends OfferGenerator implements OfferGeneratorInterfa
             $gratkaOffer->setArea($area);
         }
 
-        if(strpos($summary, "dopłata") !== false){
-            $surcharge = $this->domX->query(".//div/div/p/span/b", $liDom)->item(1)->textContent;
-            $gratkaOffer->setSurcharge($surcharge);
+        $pos = $this->isStringInArray($temp, 'dopłata');
+        if($pos !== false) {
+            $surcharge = $temp[$pos];
+            $surcharge = explode(':', $surcharge);
+            $surcharge = str_replace(' ', '', $surcharge[1]);
+            $gratkaOffer->setSurcharge(intval($surcharge));
         }
+
+        //var_dump($summary);
+        //echo '<br>';
 
         $description = $this->domX->query(".//div/div/p", $liDom)->item(1)->textContent;
         $gratkaOffer->setDescription($description);
 
+        /*
         $offerType = $this->domX->query(".//div/em", $liDom)->item(0)->textContent;
         $offerType = substr($offerType, 11);
+        */
+
+
+        $offerType = $this->offerType;
         $gratkaOffer->setOfferType($offerType);
 
         $gratkaOffer->setAddedBy($this->addedBy);

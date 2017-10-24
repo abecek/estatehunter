@@ -6,14 +6,13 @@
  * Time: 00:51
  */
 
-namespace Becek\EstatehunterBundle\Utils\Generators;
+namespace Becek\EstatehunterBundle\Utils\Scrapers;
 
 /**
- * Class OfferGenerator
- * @package Becek\EstatehunterBundle\Utils
- * @abstract
+ * Class OfferScraperAbstract
+ * @package Becek\EstatehunterBundle\Utils\Scrapers
  */
-abstract class OfferGenerator
+abstract class OfferScraperAbstract
 {
     /**
      * @var array
