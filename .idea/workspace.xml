@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="640e4c25-10e9-4172-b559-0a4bb65b0eaa" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Generators/DomGratkaGenerator.php" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Scrapers/DomGratkaScraper.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Generators/OfferGenerator.php" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Scrapers/OfferScraperAbstract.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Generators/OtodomGenerator.php" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Scrapers/OtodomScraper.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Controller/DefaultController.php" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Controller/DefaultController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Scrapers/DomGratkaScraper.php" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Scrapers/DomGratkaScraper.php" />
     </list>
     <ignored path="estatehunter.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -31,8 +29,8 @@
       <file leaf-file-name="DomGratkaScraper.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Scrapers/DomGratkaScraper.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.47542998">
-              <caret line="313" column="14" selection-start-line="313" selection-start-column="14" selection-end-line="313" selection-end-column="14" />
+            <state vertical-scroll-proportion="0.5405405">
+              <caret line="402" column="9" selection-start-line="402" selection-start-column="9" selection-end-line="402" selection-end-column="9" />
               <folding>
                 <element signature="e#142#212#0#PHP" expanded="true" />
               </folding>
@@ -55,8 +53,8 @@
       <file leaf-file-name="DefaultController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Becek/EstatehunterBundle/Controller/DefaultController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.4230769">
-              <caret line="115" column="22" selection-start-line="115" selection-start-column="22" selection-end-line="115" selection-end-column="22" />
+            <state vertical-scroll-proportion="130.84616">
+              <caret line="51" column="12" selection-start-line="51" selection-start-column="12" selection-end-line="51" selection-end-column="12" />
               <folding>
                 <element signature="e#55#112#0#PHP" expanded="true" />
               </folding>
@@ -76,10 +74,6 @@
   </component>
   <component name="FrameworkCommandLineHistory">
     <commandsHistory>
-      <command text="git add ." />
-      <command text="git commit -m &quot;One bug was found&quot;" />
-      <command text="git push" />
-      <command text="git init" />
       <command text="git add .git/" />
       <command text="git add . " />
       <command text="git commit -m &quot;OtodomGenerator is near to be done.&quot;" />
@@ -101,6 +95,10 @@
       <command text="git checkout HEAD cc.properties store/README store/cc.properties" />
       <command text="git checkout HEAD src" />
       <command text="git log --diff-filter=D" />
+      <command text="git init" />
+      <command text="git add . " />
+      <command text="git commit -m &quot;Still working&quot;" />
+      <command text="git push" />
     </commandsHistory>
   </component>
   <component name="Git.Settings">
@@ -748,8 +746,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Becek/EstatehunterBundle/Controller/DefaultController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.4230769">
-          <caret line="115" column="22" selection-start-line="115" selection-start-column="22" selection-end-line="115" selection-end-column="22" />
+        <state vertical-scroll-proportion="130.84616">
+          <caret line="51" column="12" selection-start-line="51" selection-start-column="12" selection-end-line="51" selection-end-column="12" />
           <folding>
             <element signature="e#55#112#0#PHP" expanded="true" />
           </folding>
@@ -768,8 +766,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Scrapers/DomGratkaScraper.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.47542998">
-          <caret line="313" column="14" selection-start-line="313" selection-start-column="14" selection-end-line="313" selection-end-column="14" />
+        <state vertical-scroll-proportion="0.5405405">
+          <caret line="402" column="9" selection-start-line="402" selection-start-column="9" selection-end-line="402" selection-end-column="9" />
           <folding>
             <element signature="e#142#212#0#PHP" expanded="true" />
           </folding>

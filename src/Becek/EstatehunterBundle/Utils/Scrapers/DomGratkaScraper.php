@@ -304,8 +304,9 @@ class DomGratkaScraper extends OfferScraperAbstract implements OfferGeneratorInt
             $pos = $this->isStringInArray($temp, 'piętro');
             if($pos !== false) {
                 $floors = explode(' ',$temp[$pos]);
-                $floor = intval($floors[0]);
-                $floorCount = $floors[1];
+
+                isset($floors[0]) ? $floor = intval($floors[0]) : $floor = null;
+                isset($floors[1]) ? $floorCount = $floors[1] : $floor = null;
                 $floorCount = substr($floorCount, 3);
                 $gratkaOffer->setFloorCount(intval($floorCount));
             }
@@ -343,16 +344,38 @@ class DomGratkaScraper extends OfferScraperAbstract implements OfferGeneratorInt
         $pos = $this->isStringInArray($temp, 'zł/m2');
         if($pos !== false) {
             $priceByArea = $temp[$pos];
+            $priceByArea = str_replace(',', '.', $priceByArea);
             $priceByArea = str_replace(' ', '', $priceByArea);
             $priceByArea = floatval($priceByArea);
             $gratkaOffer->setPriceByArea($priceByArea);
         }
 
+
         $area = $this->domX->query(".//div/div/p/span/b", $liDom)->item(0);
         if($area !== null){
-            $area = floatval(str_replace(",", ".",$area->textContent));
+            $area = str_replace(",", ".",$area->textContent);
+            $area = str_replace(' ', '', $area);
+            $area = floatval($area);
             $gratkaOffer->setArea($area);
         }
+
+        if($this->category == 'dzialki-grunty') {
+            $gratkaOffer->setGroundArea($gratkaOffer->getArea());
+            $gratkaOffer->setArea(null);
+
+
+            $temp2 = array('inwestycyjna', 'przemsyłowa', 'budowlana', 'usługowa');
+            var_dump($temp);
+            echo '<br>';
+            foreach($temp2 as $item){
+                $pos = $this->isStringInArrays($temp, $item);
+                if($pos !== false) {
+                    $gratkaOffer->setBuildingType($item);
+                }
+            }
+        }
+
+
 
         $pos = $this->isStringInArray($temp, 'dopłata');
         if($pos !== false) {
@@ -364,19 +387,27 @@ class DomGratkaScraper extends OfferScraperAbstract implements OfferGeneratorInt
 
         //var_dump($summary);
         //echo '<br>';
-
         $description = $this->domX->query(".//div/div/p", $liDom)->item(1)->textContent;
         $gratkaOffer->setDescription($description);
 
+        if($this->category == 'mieszkania') {
+            $temp2 = array('blok', 'apartamentowiec', 'loft', 'kamienica', 'kamienicy', 'szeregowiec');
+            $sumLower = strtolower($description);
+            foreach($temp2 as $item){
+                $check = strpos($sumLower, $item);
+                if($check !== false){
+                    if($item = 'kamienicy') $item = 'kamienica';
+                    $gratkaOffer->setBuildingType($item);
+                }
+            }
+        }
         /*
         $offerType = $this->domX->query(".//div/em", $liDom)->item(0)->textContent;
         $offerType = substr($offerType, 11);
         */
 
-
         $offerType = $this->offerType;
         $gratkaOffer->setOfferType($offerType);
-
         $gratkaOffer->setAddedBy($this->addedBy);
         $gratkaOffer->setLocalization($this->localization);
         $gratkaOffer->setCategory($this->category);

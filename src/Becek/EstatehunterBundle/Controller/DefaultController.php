@@ -49,7 +49,7 @@ class DefaultController extends Controller
             'choices' => array(
                 'Mieszkania' => 'mieszkania',
                 'Domy' => 'domy',
-            //    'Działki i grunty' => 'dzialki-grunty',
+                'Działki i grunty' => 'dzialki-grunty',
             //    'Lokale użytkowe' => 'lokale-obiekty',
             ),
         ))->add('offerType', ChoiceType::class, array(
