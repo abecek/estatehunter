@@ -9,11 +9,10 @@
 namespace Becek\EstatehunterBundle\Utils;
 
 /**
- * Class baseOffer
+ * Class BaseOfferAbstract
  * @package Becek\EstatehunterBundle\Utils
- * @abstract
  */
-abstract class BaseOffer
+abstract class BaseOfferAbstract
 {
     /**
      * @var integer

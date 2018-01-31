@@ -12,7 +12,7 @@ namespace Becek\EstatehunterBundle\Utils;
  * Class OtodomOffer
  * @package Becek\EstatehunterBundle\Utils
  */
-class OtodomOffer extends BaseOffer
+class OtodomOffer extends BaseOfferAbstract
 {
     /**
      * @var string

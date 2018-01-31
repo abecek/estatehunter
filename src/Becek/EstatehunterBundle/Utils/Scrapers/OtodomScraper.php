@@ -93,35 +93,37 @@ class OtodomScraper extends OfferScraperAbstract implements OfferGeneratorInterf
             $url .= $town .'_'. $this->cityId .'/?';
         }
         else {
-            $url .= $town .'?';
+            $url .= $town .'/?';
         }
 
-        if($this->priceFrom !== null) $url .= 'search[filter_float_price:from]='. $this->priceFrom .'&';
-        if($this->priceTo !== null) $url .= 'search[filter_float_price:to]='. $this->priceTo .'&';
+        if($this->priceFrom !== null) $url .= 'search[filter_float_price:from]='. $this->priceFrom .'&amp;';
+        if($this->priceTo !== null) $url .= 'search[filter_float_price:to]='. $this->priceTo .'&amp;';
 
         if($this->offerType == 'sprzedaz') {
-            if($this->priceByAreaFrom !== null) $url .= 'search[filter_float_price_per_m:from]='. $this->priceByAreaFrom .'&';
-            if($this->priceByAreaTo !== null) $url .= 'search[filter_float_price_per_m:to]='. $this->priceByAreaTo .'&';
+            if($this->priceByAreaFrom !== null) $url .= 'search[filter_float_price_per_m:from]='. $this->priceByAreaFrom .'&amp;';
+            if($this->priceByAreaTo !== null) $url .= 'search[filter_float_price_per_m:to]='. $this->priceByAreaTo .'&amp;';
         }
 
-        if($this->areaFrom !== null) $url .= 'search[filter_float_m:from]='. $this->areaFrom .'&';
-        if($this->areaTo !== null) $url .= 'search[filter_float_m:to]='. $this->areaTo .'&';
+        if($this->areaFrom !== null) $url .= 'search[filter_float_m:from]='. $this->areaFrom .'&amp;';
+        if($this->areaTo !== null) $url .= 'search[filter_float_m:to]='. $this->areaTo .'&amp;';
 
-        $url .= 'search[description]=1&';
+        $url .= 'search[description]=1&amp;';
         if($this->addedBy === 'private persons'){
-            $url .= 'search[private_business]=private&';
+            $url .= 'search[private_business]=private&amp;';
         }
-        $url .= 'search[dist]=0&';
-        $url .= 'search[subregion_id]='. $this->subregionId .'&';
-        $url .= 'search[city_id]='. $this->cityId .'&';
 
-        $url .= '&nrAdsPerPage='. $this->getOffersPerPage() .'&';
+        $url .= 'search[dist]=0&amp;';
+        $url .= 'search[subregion_id]='. $this->subregionId .'&amp;';
+        $url .= 'search[city_id]='. $this->cityId .'&amp;';
+
+        $url .= 'nrAdsPerPage='. $this->getOffersPerPage() .'&amp;';
+
         if($currentPage != 1) {
             $url .= 'page=' . $currentPage;
         }
 
         $url = rtrim($url, '?');
-        $url = rtrim($url, '&');
+        $url = rtrim($url, '&amp;');
 
         return $url;
     }
@@ -163,6 +165,7 @@ class OtodomScraper extends OfferScraperAbstract implements OfferGeneratorInterf
     }
 
     /**
+     * @param $options
      * @return Objects in array
      */
     public function loadOffersFromPages($options)
@@ -377,6 +380,7 @@ class OtodomScraper extends OfferScraperAbstract implements OfferGeneratorInterf
                             $otodomOffer->setConstructionMaterial($item);
                         }
                     }
+
                 }
 
                 $otodomOffer->setAddedBy($this->addedBy);

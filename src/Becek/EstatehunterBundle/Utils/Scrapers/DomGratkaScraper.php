@@ -213,6 +213,7 @@ class DomGratkaScraper extends OfferScraperAbstract implements OfferGeneratorInt
     }
 
     /**
+     * @param $options
      * @return Objects in array
      */
     public function loadOffersFromPages($options){

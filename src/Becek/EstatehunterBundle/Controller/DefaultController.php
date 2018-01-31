@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use Becek\EstatehunterBundle\Utils\Scrapers\DomGratkaScraper;
 use Becek\EstatehunterBundle\Utils\Scrapers\OtodomScraper;
+use Becek\EstatehunterBundle\Utils\Scrapers\OlxScraper;
 
 class DefaultController extends Controller
 {
@@ -39,6 +40,7 @@ class DefaultController extends Controller
         ));
     }
 
+    // todo: Create FormModel and function to process request
     public function gratkaAction(Request $request)
     {
         $form = $this->createFormBuilder(null, array(
@@ -148,6 +150,7 @@ class DefaultController extends Controller
         ));
     }
 
+    // todo: Create FormModel and function to process request
     public function otodomAction(Request $request, $suggestText = null)
     {
         $form = $this->createFormBuilder(null, array(
@@ -213,7 +216,7 @@ class DefaultController extends Controller
             'attr' => array('class' => 'form-control'),
             'choices' => array(
                 'Wszystkich' => null,
-                'Osoby prywatne' => 'private persons',
+                'Osoby prywatne' => 'private',
         ),
         ))->add('submit', SubmitType::class, array(
             'label' => 'Szukaj!',
@@ -243,6 +246,7 @@ class DefaultController extends Controller
             $options['localization']['region'] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $data['localizationRegion']));
             $options['addedBy'] = $data['addedBy'];
 
+/*
             //Getting CityId, RegionId, SubRegionId and level from otodom.pl
             $responseFromOtodom = json_decode($this->otodomRequestAction($options));
             $wantedLocalizationAsArray = array_values($options['localization']);
@@ -270,12 +274,111 @@ class DefaultController extends Controller
                     }
                 }
             }
+*/
 
             $otodomGenerator = new OtodomScraper();
             $offers = $otodomGenerator->loadOffersFromPages($options);
         }
 
         return $this->render("@BecekEstatehunter/Default/otodom.html.twig", array(
+            'searchForm' => $form->createView(),
+            'suggestText' => $suggestText,
+            'data' => $data,
+            'html' => $offers,
+        ));
+    }
+
+    // todo: Create FormModel and function to process request
+    public function olxAction(Request $request, $suggestText = null)
+    {
+        $data = null;
+        $form = $this->createFormBuilder(null, array(
+            'attr' => array('class' => 'form')
+        ))->add('localizationTown', TextType::class, array(
+            'label' => 'Lokalizacja(miejscowość):',
+            'required'   => false,
+            'attr' => array('class' => 'form-control'),
+        ))->add('localizationRegion', TextType::class, array(
+            'label' => 'Lokalizacja(województwo):',
+            'required' => false,
+            'attr' => array('class' => 'form-control'),
+        ))->add('localizationSubregion', TextType::class, array(
+            'label' => 'Lokalizacja(powiat):',
+            'required' => false,
+            'attr' => array('class' => 'form-control'),
+        ))->add('category', ChoiceType::class, array(
+            'label' => 'Wybierz kategorię:',
+            'attr' => array('class' => 'form-control'),
+            'choices' => array(
+                'Mieszkania' => 'mieszkania',
+                'Domy' => 'domy',
+                //   'Działki i grunty' => 'dzialki',
+                //   'Biura i Lokale' => 'biura-lokale',
+            ),
+        ))->add('offerType', ChoiceType::class, array(
+            'label' => 'Rodzaj ogłoszenia:',
+            'attr' => array('class' => 'form-control'),
+            'choices' => array(
+                'Sprzedaż' => 'sprzedaz',
+                'Wynajem' => 'wynajem',
+                //'Zymiana' => 'zamiana',
+            ),
+        ))->add('priceFrom', MoneyType::class, array(
+            'label' => 'Cena od:',
+            'currency' => '',
+            'required'   => false,
+            'attr' => array('class' => 'form-control')
+        ))->add('priceTo', MoneyType::class, array(
+            'label' => 'Cena do:',
+            'currency' => '',
+            'required'   => false,
+            'attr' => array('class' => 'form-control')
+        ))->add('areaFrom', TextType::class, array(
+            'label' => 'Powierzchnia od:',
+            'required'   => false,
+            'attr' => array('class' => 'form-control')
+        ))->add('areaTo', TextType::class, array(
+            'label' => 'Powierzchnia do:',
+            'required'   => false,
+            'attr' => array('class' => 'form-control')
+        ))->add('addedBy', ChoiceType::class, array(
+            'label' => 'Dodane przez:',
+            'attr' => array('class' => 'form-control'),
+            'choices' => array(
+                'Wszystkich' => null,
+                'Osoby prywatne' => 'private',
+                'Biura/Deweloperzy' => 'business'
+            ),
+        ))->add('submit', SubmitType::class, array(
+            'label' => 'Szukaj!',
+            'attr' => array('class' => 'btn btn-block btn-primary btn-lg')
+        ))->getForm();
+
+        $data = null;
+        $html = null;
+        $offers = array();
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $options = array();
+            $options['category'] = $data['category'];
+            $options['offerType'] = $data['offerType'];
+            $options['priceFrom'] = $data['priceFrom'];
+            $options['priceTo'] = $data['priceTo'];
+            $options['areaFrom'] = $data['areaFrom'];
+            $options['areaTo'] = $data['areaTo'];
+            $options['localization']['subregion'] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $data['localizationSubregion']));
+            $options['localization']['region'] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $data['localizationRegion']));
+            $options['localization']['town'] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $data['localizationTown']));
+            $options['addedBy'] = $data['addedBy'];
+
+            $olxGenerator = new OlxScraper();
+            $offers = $olxGenerator->loadOffersFromPages($options);
+        }
+
+        return $this->render("@BecekEstatehunter/Default/olx.html.twig", array(
             'searchForm' => $form->createView(),
             'suggestText' => $suggestText,
             'data' => $data,

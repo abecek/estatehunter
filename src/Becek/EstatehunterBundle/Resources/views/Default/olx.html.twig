@@ -27,14 +27,14 @@
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ path('gratka') }}">DomGratka <span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('gratka') }}">DomGratka</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('otodom') }}">Otodom</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('olx') }}">Olx</a>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ path('olx') }}">Olx <span class="sr-only">(current)</span></a>
             </li>
         </ul>
 
@@ -44,7 +44,31 @@
 
 <div class="container">
     <div class="starter-template">
-        <h1>Wyszukaj oferty na dom.gratka.pl</h1>
+        <h1>Wyszukaj oferty na olx.pl</h1>
+         {#
+         <div class="row">
+            <div class="col-md-6">
+                <form class="form" method="POST" action="{{ path('otodomRequest') }}">
+                    <div class="form-group">
+                        <label for="localization">Wpisz lokalizacje poniżej:</label>
+                        <input class="form-control" type="text" id="localization" name="localization"/>
+                    </div>
+
+                    <button id="btnSendRequest" class="btn btn-block btn-primary">Wyślij zapytanie</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h4>Wynik:</h4>
+                <h5>
+                    <div id="result">
+                        {% if suggestText is null %}
+                            {{ suggestText }}
+                        {% endif %}
+                    </div>
+                </h5>
+            </div>
+        </div>
+         #}
         <hr>
         <div class="row">
             <div class="col-md-4">
@@ -56,6 +80,7 @@
                 <div>
                     {% if data is not null %}
                         {{ dump(data) }}
+                        {{ html|length }}
                     {% endif %}
                 </div>
                 <div>
@@ -85,9 +110,35 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="{{ asset('bundles/becekestatehunter/js/jquery-3.2.1.min.js') }}"></script>
-<script src="{{ asset('bundles/becekestatehunter/js/jquery-slim.min.js') }}"></script>
 <script src="{{ asset('bundles/becekestatehunter/js/popper.min.js') }}"></script>
 <script src="{{ asset('bundles/becekestatehunter/js/bootstrap.min.js') }}"></script>
+
+<script>
+    {#
+        $(document).on('click','#btnSendRequest',function(e){
+            e.preventDefault();
+
+            var postData = $("#localization").text();
+            console.log('Weszlo');
+
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "https://www.otodom.pl/ajax/geo6/autosuggest/",
+                data: postData,
+                contentType: "application/json; charset=utf-8",
+                success: function(data){
+                    console.log(data);
+                },
+                error: function(e){
+                    console.log(e.message);
+                }
+            });
+
+            return false;
+        });
+    #}
+</script>
 
 {#
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

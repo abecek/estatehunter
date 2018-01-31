@@ -12,7 +12,7 @@ namespace Becek\EstatehunterBundle\Utils;
  * Class DomGratkaOffer
  * @package Becek\EstatehunterBundle\Utils
  */
-class DomGratkaOffer extends BaseOffer
+class DomGratkaOffer extends BaseOfferAbstract
 {
     /**
      * @var string
