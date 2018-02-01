@@ -9,6 +9,7 @@
 namespace Becek\EstatehunterBundle\Utils\Scrapers;
 
 use Becek\EstatehunterBundle\Utils\Interfaces\OfferGeneratorInterface;
+use Becek\EstatehunterBundle\Utils\OlxOffer;
 
 /**
  * Class OlxScraper
@@ -52,6 +53,24 @@ class OlxScraper extends OfferScraperAbstract implements OfferGeneratorInterface
     public static function getOffersPerPage()
     {
         return self::$offersPerPage;
+    }
+
+    // todo: wywalic stad do jakies klasy i na static
+    private function changingPolishChars($string)
+    {
+        $a = array( 'Ę', 'Ó', 'Ą', 'Ś', 'Ł', 'Ż', 'Ź', 'Ć', 'Ń', 'ę', 'ó', 'ą',
+            'ś', 'ł', 'ż', 'ź', 'ć', 'ń' );
+        $b = array( 'E', 'O', 'A', 'S', 'L', 'Z', 'Z', 'C', 'N', 'e', 'o', 'a',
+            's', 'l', 'z', 'z', 'c', 'n' );
+
+        $string = str_replace( $a, $b, $string );
+        $string = preg_replace( '#[^a-z0-9]#is', ' ', $string );
+        $string = trim( $string );
+        $string = preg_replace( '#\s{2,}#', ' ', $string );
+        $string = str_replace( ' ', '-', $string );
+        $string = strtolower($string);
+
+        return $string;
     }
 
     /**
@@ -155,7 +174,7 @@ class OlxScraper extends OfferScraperAbstract implements OfferGeneratorInterface
 
             $url = $this->prepareStringUrlWithOptions($options, $currentPage);
             var_dump($url);
-            echo "<br><br>";
+            echo "<br>";
 
             $this->html = $this->getHtmlFromUrl($url);
             $this->dom = new \DOMDocument();
@@ -164,55 +183,91 @@ class OlxScraper extends OfferScraperAbstract implements OfferGeneratorInterface
             //$this->dom->preserveWhiteSpace = true;
             $this->domX = new \DOMXPath($this->dom);
 
-            if($currentPage == 1) {
+            if ($currentPage == 1) {
+                // todo: blad kiedy za filtry
                 $pagesCount = $this->domX->query('//div[@id="innerLayout"]/div[@id="listContainer"]/section/div[@class="wrapper"]/div[@class="content"]/div[@class="pager rel clr"]/form/fieldset/input[@type="submit"]')->item(0)->attributes->item(0);
                 //$pagesCount = $this->dom->getElementsByTagNameNS('input', 'input');
-                if($pagesCount !== null) {
+                if ($pagesCount !== null) {
                     $this->pagesCount = intval(ltrim($pagesCount->textContent, '{totalPages:'));
-                }
-                else{
+                } else {
                     $this->pagesCount = 1;
                 }
             }
 
-            $allArticlesWithOffers = $this->domX->query('//div[@id="innerLayout"]/div[@id="listContainer"]/section/div[@class="wrapper"]/div[@class="content"]/div/table[@id="offers_table"]')->item(0);
+            $allArticlesWithOffers = $this->domX->query('//div[@id="innerLayout"]/div[@id="listContainer"]/section/div[@class="wrapper"]/div[@class="content"]/div/table[@id="offers_table"]/tbody/tr[@class="wrap"]/td/table[@summary="Ogłoszenie"]');
 
-            var_dump($this->pagesCount);
-            var_dump($allArticlesWithOffers);
-            exit;
+            //var_dump($allArticlesWithOffers->item(0));
+            //exit;
 
-            // todo: Finish looping over offers and creating from them objects
-            /*
             $temp = array();
-            foreach($allArticlesWithOffers as $article){
-                $offerId = $article->attributes->item(1)->textContent;
-                if(!in_array($offerId, $temp)) {
+            foreach ($allArticlesWithOffers as $article) {
+                $offerId = $article->attributes->item(3)->textContent;
+                $offerDataId = $article->attributes->item(5)->textContent;
+                if (!in_array($offerId, $temp)) {
                     $temp[] = $offerId;
                 }
             }
+            //var_dump($temp);
 
-            foreach($temp as $id) {
-                $otodomOffer = $this->createOfferFromSummary($id);
-                $this->offersAsObjectsArray[$id] = $otodomOffer;
+            foreach ($temp as $id) {
+                $olxOffer = $this->createOfferFromSummary($id);
+                $this->offersAsObjectsArray[$id] = $olxOffer;
             }
 
             $currentPage += 1;
-            */
         }
+        $this->offersAsIdsArray = array_keys($this->offersAsObjectsArray);
 
-        //$this->offersAsIdsArray = array_keys($this->offersAsObjectsArray);
-
-
+        echo '<br>';
+        var_dump(count($this->offersAsIdsArray));
+        echo '<br>';
+        var_dump($this->pagesCount);
 
         return $this->offersAsObjectsArray;
     }
 
     /**
      * @param \DOMDocument $Dom
-     * @return Offer
+     * @return OlxOffer
      */
     public function createOfferFromSummary($id)
     {
+        $olxOffer = new OlxOffer();
+        $dom = $this->domX->query("//table[@class='". $id ."']")->item(0);
+        if($dom !== null) {
+            $tempArray = explode(' ', $id);
+            $correctId = ltrim($tempArray[3], 'ad_');
+            $olxOffer->setIdOffer($correctId);
 
+            $title = $dom->getElementsByTagName("strong")->item(0);
+            if($title !== null) {
+                $title = $title->textContent;
+                $olxOffer->setTitle($title);
+            }
+
+             $price = $dom->getElementsByTagName("strong")->item(1);
+            if($price !== null) {
+                $price = $price->textContent;
+                $price = str_replace(" ", "", $price);
+                $price = floatval($price);
+                $olxOffer->setPrice($price);
+            }
+
+            //$localization = $dom->getElementsByTagName("span")->item(0);
+            $localizationDistrict = $this->domX->query("//table[@class='". $id ."']/tbody/tr/td/div/p/small/span")->item(0);
+            if($localizationDistrict !== null){
+                $localizationDistrict = explode(", " ,$localizationDistrict->textContent);
+                $tempLocal = $this->localization;
+                if (isset($localizationDistrict[1])) $tempLocal["district"] = trim($localizationDistrict[1], ' ');
+                // todo: add district to Localization
+                $olxOffer->setLocalization($tempLocal);
+            }
+
+            $olxOffer->setOfferType($this->offerType);
+            $olxOffer->setCategory($this->category);
+        }
+
+        //var_dump($olxOffer);
+        return $olxOffer;
     }
 }

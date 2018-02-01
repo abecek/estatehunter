@@ -15,7 +15,7 @@ namespace Becek\EstatehunterBundle\Utils;
 abstract class BaseOfferAbstract
 {
     /**
-     * @var integer
+     * @var integer|string
      */
     protected $idOffer;
 
@@ -105,7 +105,7 @@ abstract class BaseOfferAbstract
     protected $shortDescription;
 
     /**
-     * @return int
+     * @return integer|string
      */
     public function getIdOffer()
     {
@@ -113,7 +113,7 @@ abstract class BaseOfferAbstract
     }
 
     /**
-     * @param int $idOffer
+     * @param integer|string $idOffer
      */
     public function setIdOffer($idOffer)
     {

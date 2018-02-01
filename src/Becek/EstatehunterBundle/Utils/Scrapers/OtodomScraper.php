@@ -175,7 +175,7 @@ class OtodomScraper extends OfferScraperAbstract implements OfferGeneratorInterf
 
             $url = $this->prepareStringUrlWithOptions($options, $currentPage);
             var_dump($url);
-            echo "<br><br>";
+            echo "<br>";
 
             $this->html = $this->getHtmlFromUrl($url);
             $this->dom = new \DOMDocument();
@@ -195,6 +195,8 @@ class OtodomScraper extends OfferScraperAbstract implements OfferGeneratorInterf
             }
 
             $allArticlesWithOffers = $this->domX->query('//div[@class="col-md-content"]/article');
+            //var_dump($allArticlesWithOffers->item(0));
+            //xit;
 
             $temp = array();
             foreach($allArticlesWithOffers as $article){
@@ -213,12 +215,16 @@ class OtodomScraper extends OfferScraperAbstract implements OfferGeneratorInterf
         }
         $this->offersAsIdsArray = array_keys($this->offersAsObjectsArray);
 
+        echo '<br>';
+        var_dump(count($this->offersAsIdsArray));
+        echo '<br>';
+
         return $this->offersAsObjectsArray;
     }
 
     /**
      * @param \DOMDocument $Dom
-     * @return Offer
+     * @return OtodomOffer
      */
     public function createOfferFromSummary($id)
     {
