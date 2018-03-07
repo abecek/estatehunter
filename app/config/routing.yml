@@ -18,6 +18,11 @@ otodom:
     defaults: { _controller: BecekEstatehunterBundle:Default:otodom }
     methods:  ['GET','POST']
 
+localization:
+    path:     /localization
+    defaults: { _controller: BecekEstatehunterBundle:Default:localization }
+    methods:  ['POST']
+
 olx:
     path:     /olx
     defaults: { _controller: BecekEstatehunterBundle:Default:olx }

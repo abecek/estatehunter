@@ -45,10 +45,10 @@
 <div class="container">
     <div class="starter-template">
         <h1>Wyszukaj oferty na otodom.pl</h1>
-        {#
+
          <div class="row">
             <div class="col-md-6">
-                <form class="form" method="POST" action="{{ path('otodomRequest') }}">
+                <form class="form" method="POST" action="{{ path('localization') }}">
                     <div class="form-group">
                         <label for="localization">Wpisz lokalizacje poniżej:</label>
                         <input class="form-control" type="text" id="localization" name="localization"/>
@@ -61,20 +61,22 @@
                 <h4>Wynik:</h4>
                 <h5>
                     <div id="result">
-                        {% if suggestText is null %}
-                            {{ suggestText }}
+                        {% if suggestText is not null %}
+                            {{ dump(suggestText) }}
                         {% endif %}
                     </div>
                 </h5>
             </div>
         </div>
-        #}
+
         <hr>
         <div class="row">
             <div class="col-md-4">
-                {{ form_start(searchForm) }}
-                {{ form_widget(searchForm) }}
-                {{ form_end(searchForm) }}
+                {% if searchForm is not null %}
+                    {{ form_start(searchForm) }}
+                    {{ form_widget(searchForm) }}
+                    {{ form_end(searchForm) }}
+                {% endif %}
             </div>
             <div class="col-md-8">
                 <div>
@@ -114,20 +116,22 @@
 <script src="{{ asset('bundles/becekestatehunter/js/bootstrap.min.js') }}"></script>
 
 <script>
-    {#
         $(document).on('click','#btnSendRequest',function(e){
             e.preventDefault();
 
-            var postData = $("#localization").text();
-            console.log('Weszlo');
 
+            var inputText = $("#localization").val();
             $.ajax({
-                type: "GET",
-                dataType: "json",
-                url: "https://www.otodom.pl/ajax/geo6/autosuggest/",
-                data: postData,
-                contentType: "application/json; charset=utf-8",
+                type: "post",
+                url: "{{ url('localization') }}",
+                data: {
+                    localization: inputText,
+                },
                 success: function(data){
+                    alert("well done");
+                    console.log(data);
+                },
+                complete: function(data) {
                     console.log(data);
                 },
                 error: function(e){
@@ -137,7 +141,6 @@
 
             return false;
         });
-    #}
 </script>
 
 {#
