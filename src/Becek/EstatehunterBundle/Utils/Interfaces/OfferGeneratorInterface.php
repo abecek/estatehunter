@@ -25,7 +25,7 @@ interface OfferGeneratorInterface
 
     /**
      * @param \DOMDocument $Dom
-     * @return
+     * @return OlxOffer|DomGratkaOffer|OtodomOffer
      */
     public function createOfferFromSummary($Dom);
 

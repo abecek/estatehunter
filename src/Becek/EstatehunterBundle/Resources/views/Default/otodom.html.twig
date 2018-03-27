@@ -15,6 +15,9 @@
     <!-- Custom styles for this template -->
     <link href="{{ asset('bundles/becekestatehunter/css/main.css') }}" rel="stylesheet">
 
+    <!-- Select2 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+
 </head>
 
 <body>
@@ -47,20 +50,30 @@
         <h1>Wyszukaj oferty na otodom.pl</h1>
 
          <div class="row">
-            <div class="col-md-6">
-                <form class="form" method="POST" action="{{ path('localization') }}">
-                    <div class="form-group">
-                        <label for="localization">Wpisz lokalizacje poniżej:</label>
-                        <input class="form-control" type="text" id="localization" name="localization"/>
-                    </div>
+             <div class="col-6">
+                 <form class="form" method="POST">
+                     <div class="form-group">
+                         {#
+                         <label for="localization">Wpisz lokalizacje poniżej:</label>
+                         <input class="form-control" type="text" id="localization" name="localization"/>
+                         <select class="form-control" id="result-select">
+                             <option value="no-results" selected="selected">Brak wyników</option>
+                         </select>
+                         #}
+                         <select style="width: 400px;" class="js-data-example-ajax"></select>
+                     </div>
+                     {#
+                     <div class="form-group pull-right">
+                         <button id="btnSendRequest" class="btn btn-block btn-primary">Wyślij zapytanie</button>
+                     </div>
+                     #}
+                 </form>
+             </div>
 
-                    <button id="btnSendRequest" class="btn btn-block btn-primary">Wyślij zapytanie</button>
-                </form>
-            </div>
-            <div class="col-md-6">
+            <div class="col-6">
                 <h4>Wynik:</h4>
                 <h5>
-                    <div id="result">
+                    <div id="result" class="">
                         {% if suggestText is not null %}
                             {{ dump(suggestText) }}
                         {% endif %}
@@ -115,32 +128,66 @@
 <script src="{{ asset('bundles/becekestatehunter/js/popper.min.js') }}"></script>
 <script src="{{ asset('bundles/becekestatehunter/js/bootstrap.min.js') }}"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
 <script>
-        $(document).on('click','#btnSendRequest',function(e){
-            e.preventDefault();
+    {#
+    $("#localization").change(function() {
+        var inputText = $("#localization").val();
+        $("#result-select").empty().append('<option value="no-results" selected="selected">Brak wyników</option>');
 
-
-            var inputText = $("#localization").val();
-            $.ajax({
-                type: "post",
-                url: "{{ url('localization') }}",
-                data: {
-                    localization: inputText,
-                },
-                success: function(data){
-                    alert("well done");
-                    console.log(data);
-                },
-                complete: function(data) {
-                    console.log(data);
-                },
-                error: function(e){
-                    console.log(e.message);
+        $.ajax({
+            type: "post",
+            url: "{{ url('localization') }}",
+            data: {
+                localization: inputText,
+            },
+            success: function(data){
+                data = JSON.parse(data);
+                console.log(data);
+                if(data.length > 0){
+                    $("#result-select").empty();
+                    $.each(data, function (index, item) {
+                        if (item.level == "CITY") {
+                            if (index == 0) {
+                                $("#result-select").append('<option value="' + item.text + '" selected="selected">' + item.text + '</option>');
+                            }
+                            else {
+                                $("#result-select").append('<option value="' + item.text + '">' + item.text + '</option>');
+                            }
+                        }
+                    });
                 }
-            });
-
-            return false;
+            },
+            error: function(e){
+                console.log(e.message);
+            }
         });
+    });
+    #}
+
+    var inputText = $("#localization").val();
+    $('.js-data-example-ajax').select2({
+
+        ajax: {
+            url: "{{ url('localization') }}",
+            type: 'POST',
+            delay: 500,
+            data: inputText,
+            processResults: function (data) {
+                data = JSON.parse(data);
+                return {
+                    results: $.map(data, function(obj) {
+                        if(obj.level == "CITY") {
+                            return { id: obj.id, text: obj.text };
+                        }
+                        return null;
+                    })
+                };
+            }
+        }
+    });
+
 </script>
 
 {#

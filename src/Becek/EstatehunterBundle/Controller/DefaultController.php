@@ -5,6 +5,9 @@ namespace Becek\EstatehunterBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -314,15 +317,22 @@ class DefaultController extends Controller
         }
         curl_close ($ch);
 
-        return $result;
+        return new JsonResponse(strip_tags($result));
     }
+
+
 
     public function localizationAction(Request $request, $target = "otodom")
     {
-        $localization = $request->get('localization');
+        //$localization = $request->get('localization');
+        $localization = $request->get('q');
 
         if ($localization != 'null') {
+
             return $this->otodomRequest($localization);
+        }
+        else {
+            return new Response('DUPA');
         }
 
     }

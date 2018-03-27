@@ -186,7 +186,8 @@ class OlxScraper extends OfferScraperAbstract implements OfferGeneratorInterface
             if ($currentPage == 1) {
                 // todo: blad kiedy za filtry
                 $pagesCount = $this->domX->query('//div[@id="innerLayout"]/div[@id="listContainer"]/section/div[@class="wrapper"]/div[@class="content"]/div[@class="pager rel clr"]/form/fieldset/input[@type="submit"]')->item(0)->attributes->item(0);
-                //$pagesCount = $this->dom->getElementsByTagNameNS('input', 'input');
+                //$pagesCount = null;
+                ///$pagesCount = $this->dom->getElementsByTagNameNS('input', 'input');
                 if ($pagesCount !== null) {
                     $this->pagesCount = intval(ltrim($pagesCount->textContent, '{totalPages:'));
                 } else {
