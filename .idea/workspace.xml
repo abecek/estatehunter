@@ -1,28 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="640e4c25-10e9-4172-b559-0a4bb65b0eaa" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/php.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Entity/Filter.php" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Entity/Filters/FlatFilter.php" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Entity/Filters/GroundFilter.php" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Entity/Filters/HouseFilter.php" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Entity/Search.php" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Repository/FilterRepository.php" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Repository/Filters/FlatFilterRepository.php" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Repository/Filters/GroundFilterRepository.php" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Repository/Filters/HouseFilterRepository.php" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Repository/SearchRepository.php" />
-      <change beforePath="$PROJECT_DIR$/.idea/estatehunter.iml" afterPath="$PROJECT_DIR$/.idea/estatehunter.iml" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Controller/DefaultController.php" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Controller/DefaultController.php" />
-      <change beforePath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Resources/views/Default/otodom.html.twig" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Resources/views/Default/otodom.html.twig" />
-      <change beforePath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Interfaces/OfferGeneratorInterface.php" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Interfaces/OfferGeneratorInterface.php" />
-      <change beforePath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Scrapers/DomGratkaScraper.php" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Scrapers/DomGratkaScraper.php" />
-      <change beforePath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Scrapers/OlxScraper.php" afterPath="$PROJECT_DIR$/src/Becek/EstatehunterBundle/Utils/Scrapers/OlxScraper.php" />
-      <change beforePath="$PROJECT_DIR$/web/app_dev.php" afterPath="$PROJECT_DIR$/web/app_dev.php" />
-    </list>
+    <list default="true" id="640e4c25-10e9-4172-b559-0a4bb65b0eaa" name="Default" comment="" />
     <ignored path="estatehunter.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -499,12 +478,12 @@
       <updated>1508185487349</updated>
       <workItem from="1520867065323" duration="11169000" />
       <workItem from="1520960502071" duration="12358000" />
-      <workItem from="1522180984559" duration="556000" />
+      <workItem from="1522180984559" duration="699000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24083000" />
+    <option name="totallyTimeSpent" value="24226000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
