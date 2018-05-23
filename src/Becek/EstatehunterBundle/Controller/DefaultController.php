@@ -61,8 +61,10 @@ class DefaultController extends Controller
             'label' => 'Rodzaj ogłoszenia:',
             'attr' => array('class' => 'form-control'),
             'choices' => array(
-                'na sprzedaż' => 'sprzedam',
-                'do wynajęcia' => 'do-wynajecia',
+                'na sprzedaż' => 'sprzedaz',
+                'do wynajęcia' => 'wynajem',
+                //'zamiana' => 'zamiana',,
+                //'pozostałe' => 'pozostale',
             //    'inne oferty' => 'inne',
             ),
         ))->add('priceFrom', MoneyType::class, array(

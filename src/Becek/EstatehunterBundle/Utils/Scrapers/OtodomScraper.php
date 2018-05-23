@@ -77,11 +77,12 @@ class OtodomScraper extends OfferScraperAbstract implements OfferGeneratorInterf
             isset($options['areaFrom']) ? $this->areaFrom = $options['areaFrom'] : null;
             isset($options['areaTo']) ? $this->areaTo = $options['areaTo'] : null;
             isset($options['localization']) ? $this->localization = $options['localization'] : null;
-            isset($options['addedBy']) ? $this->addedBy = $options['addedBy'] : $this->addedBy = null;
-            isset($options['cityId']) ? $this->cityId = $options['cityId'] : $this->addedBy = null;
-            isset($options['subregionId']) ? $this->subregionId = $options['subregionId'] : $this->addedBy = null;
-            isset($options['regionId']) ? $this->regionId = $options['regionId'] : $this->addedBy = null;
-            isset($options['level']) ? $this->level = $options['level'] : $this->addedBy = null;
+            isset($options['addedBy']) ? $this->addedBy = $options['addedBy'] : null;
+            isset($options['cityId']) ? $this->cityId = $options['cityId'] : $this->cityId = null;
+            isset($options['subregionId']) ? $this->subregionId = $options['subregionId'] : $this->subregionId = null;
+            isset($options['regionId']) ? $this->regionId = $options['regionId'] : $this->regionId = null;
+            isset($options['level']) ? $this->level = $options['level'] : $this->level = null;
+
         }
 
         $town = isset($options['localization']['town']) ? $options['localization']['town'] : '';
@@ -96,34 +97,36 @@ class OtodomScraper extends OfferScraperAbstract implements OfferGeneratorInterf
             $url .= $town .'/?';
         }
 
-        if($this->priceFrom !== null) $url .= 'search[filter_float_price:from]='. $this->priceFrom .'&amp;';
-        if($this->priceTo !== null) $url .= 'search[filter_float_price:to]='. $this->priceTo .'&amp;';
+        if($this->priceFrom !== null) $url .= 'search[filter_float_price:from]='. $this->priceFrom .'&';
+        if($this->priceTo !== null) $url .= 'search[filter_float_price:to]='. $this->priceTo .'&';
 
         if($this->offerType == 'sprzedaz') {
-            if($this->priceByAreaFrom !== null) $url .= 'search[filter_float_price_per_m:from]='. $this->priceByAreaFrom .'&amp;';
-            if($this->priceByAreaTo !== null) $url .= 'search[filter_float_price_per_m:to]='. $this->priceByAreaTo .'&amp;';
+            if($this->priceByAreaFrom !== null) $url .= 'search[filter_float_price_per_m:from]='. $this->priceByAreaFrom .'&';
+            if($this->priceByAreaTo !== null) $url .= 'search[filter_float_price_per_m:to]='. $this->priceByAreaTo .'&';
         }
 
-        if($this->areaFrom !== null) $url .= 'search[filter_float_m:from]='. $this->areaFrom .'&amp;';
-        if($this->areaTo !== null) $url .= 'search[filter_float_m:to]='. $this->areaTo .'&amp;';
+        if($this->areaFrom !== null) $url .= 'search[filter_float_m:from]='. $this->areaFrom .'&';
+        if($this->areaTo !== null) $url .= 'search[filter_float_m:to]='. $this->areaTo .'&';
 
-        $url .= 'search[description]=1&amp;';
-        if($this->addedBy === 'private persons'){
-            $url .= 'search[private_business]=private&amp;';
+        $url .= 'search[description]=1&';
+
+        if($this->addedBy != null) {
+            echo 'OK !  ';
+            $url .= 'search[private_business]='. $this->addedBy .'&';
         }
 
-        $url .= 'search[dist]=0&amp;';
-        $url .= 'search[subregion_id]='. $this->subregionId .'&amp;';
-        $url .= 'search[city_id]='. $this->cityId .'&amp;';
+        $url .= 'search[dist]=0&';
+        $url .= 'search[subregion_id]='. $this->subregionId .'&';
+        $url .= 'search[city_id]='. $this->cityId .'&';
 
-        $url .= 'nrAdsPerPage='. $this->getOffersPerPage() .'&amp;';
+        $url .= 'nrAdsPerPage='. $this->getOffersPerPage() .'&';
 
         if($currentPage != 1) {
             $url .= 'page=' . $currentPage;
         }
 
         $url = rtrim($url, '?');
-        $url = rtrim($url, '&amp;');
+        $url = rtrim($url, '&');
 
         return $url;
     }
