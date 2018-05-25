@@ -35,10 +35,7 @@
                 <a class="nav-link" href="{{ path('otodom') }}">Otodom</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="{{ path('olx') }}">Olx</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="{{ path('newFilter') }}">Dodaj nowy filtr</a>
+                <a class="nav-link" href="{{ path('olx') }}">Olx</a>
             </li>
         </ul>
     </div>
@@ -47,10 +44,20 @@
 
 <div class="container">
     <div class="starter-template">
-        <h1>Wyszukaj oferty na portalach ogłoszeniowych</h1>
+        <h1>Dodaj nowe wyszukiwane</h1>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-4">
+                {{ form_start(filterForm) }}
+                {{ form_widget(filterForm) }}
+                {{ form_end(filterForm) }}
+            </div>
+            <div class="col-md-8">
+                <div>
 
+                </div>
+                <div>
+
+                </div>
 
             </div>
         </div>

@@ -154,6 +154,11 @@ class Filter
      */
     private $state = 1;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="idUser", type="integer", options={"unsigned"=true})
+     */
     private $idUser;
 
 
@@ -590,6 +595,29 @@ class Filter
     public function setState($state)
     {
         $this->state = $state;
+        return $this;
+    }
+
+    /**
+     * Get idUser
+     *
+     * @return int
+     */
+    public function getIdUser()
+    {
+        return $this->idUser;
+    }
+
+    /**
+     * Set idUser
+     *
+     * @param int $idUser
+     *
+     * @return Filter
+     */
+    public function setIdUser($idUser)
+    {
+        $this->idUser = $idUser;
         return $this;
     }
 
