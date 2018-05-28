@@ -22,74 +22,11 @@ class FlatFilter
     private $idFlatFilter;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="constructionYearFrom", type="smallint", nullable=true, options={"unsigned"=true})
-     */
-    private $constructionYearFrom;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="constructionYearTo", type="smallint", nullable=true, options={"unsigned"=true})
-     */
-    private $constructionYearTo;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="floor", type="string", length=25, nullable=true)
-     */
-    private $floor;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="floorsCountFrom", type="smallint", nullable=true, options={"unsigned"=true})
-     */
-    private $floorsCountFrom;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="floorsCountTo", type="smallint", nullable=true, options={"unsigned"=true})
-     */
-    private $floorsCountTo;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="roomsCount", type="string", length=20, nullable=true, options={"unsigned"=true})
-     */
-    private $roomsCount;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="isFurnished", type="boolean", nullable=true)
-     */
-    private $isFurnished;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="additionalArea", type="string", length=30, nullable=true)
-     */
-    private $additionalArea;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="buildingType", type="string", length=20, nullable=true)
-     */
-    private $buildingType;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=150)
      */
-    private $titile;
+    private $title;
 
     /**
      * @var string
@@ -141,6 +78,62 @@ class FlatFilter
     private $priceAreaTo;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="constructionYearFrom", type="smallint", nullable=true, options={"unsigned"=true})
+     */
+    private $constructionYearFrom;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="constructionYearTo", type="smallint", nullable=true, options={"unsigned"=true})
+     */
+    private $constructionYearTo;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="floorsCountFrom", type="smallint", nullable=true, options={"unsigned"=true})
+     */
+    private $floorsCountFrom;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="floorsCountTo", type="smallint", nullable=true, options={"unsigned"=true})
+     */
+    private $floorsCountTo;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="roomsCount", type="smallint", nullable=true, options={"unsigned"=true})
+     */
+    private $roomsCount;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="buildingType", type="smallint", nullable=true, options={"unsigned"=true})
+     */
+    private $buildingType;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="addedBy", type="smallint", nullable=true, options={"unsigned"=true})
+     */
+    private $addedBy;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="marketType", type="smallint", nullable=true, options={"unsigned"=true})
+     */
+    private $marketType;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="dateCreated", type="datetime")
@@ -162,18 +155,11 @@ class FlatFilter
     private $dateLastSearch;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="addedBy", type="smallint", nullable=true, options={"unsigned"=true})
+     * @ORM\Column(name="city", type="string", length=100, nullable=true)
      */
-    private $addedBy;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="marketType", type="smallint", nullable=true, options={"unsigned"=true})
-     */
-    private $marketType;
+    private $city;
 
     /**
      * @var string
@@ -192,13 +178,6 @@ class FlatFilter
     /**
      * @var string
      *
-     * @ORM\Column(name="city", type="string", length=100, nullable=true)
-     */
-    private $city;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="district", type="string", length=100, nullable=true)
      */
     private $district;
@@ -208,7 +187,7 @@ class FlatFilter
      *
      * @ORM\Column(name="searchFrequency", type="decimal", precision=2, scale=2, options={"unsigned"=true})
      */
-    private $searchFrequency = "1";
+    private $searchFrequency = "1.5";
 
     /**
      * @var int
@@ -223,7 +202,6 @@ class FlatFilter
      * @ORM\Column(name="idUser", type="integer", options={"unsigned"=true})
      */
     private $idUser;
-
 
     /**
      * Set areaFrom
@@ -582,18 +560,18 @@ class FlatFilter
     /**
      * @return string
      */
-    public function getTitile()
+    public function getTitle()
     {
-        return $this->titile;
+        return $this->title;
     }
 
     /**
      * @param string $titile
      * @return Filter
      */
-    public function setTitile($titile)
+    public function setTitle($title)
     {
-        $this->titile = $titile;
+        $this->title = $title;
         return $this;
     }
 
@@ -733,30 +711,6 @@ class FlatFilter
     }
 
     /**
-     * Set floor
-     *
-     * @param string $floor
-     *
-     * @return FlatFilter
-     */
-    public function setFloor($floor)
-    {
-        $this->floor = $floor;
-
-        return $this;
-    }
-
-    /**
-     * Get floor
-     *
-     * @return string
-     */
-    public function getFloor()
-    {
-        return $this->floor;
-    }
-
-    /**
      * Set floorsCountFrom
      *
      * @param integer $floorsCountFrom
@@ -807,7 +761,7 @@ class FlatFilter
     /**
      * Set roomsCount
      *
-     * @param string $roomsCount
+     * @param int $roomsCount
      *
      * @return FlatFilter
      */
@@ -821,7 +775,7 @@ class FlatFilter
     /**
      * Get roomsCount
      *
-     * @return string
+     * @return int
      */
     public function getRoomsCount()
     {
@@ -853,31 +807,7 @@ class FlatFilter
     }
 
     /**
-     * Set additionalArea
-     *
-     * @param string $additionalArea
-     *
-     * @return FlatFilter
-     */
-    public function setAdditionalArea($additionalArea)
-    {
-        $this->additionalArea = $additionalArea;
-
-        return $this;
-    }
-
-    /**
-     * Get additionalArea
-     *
-     * @return string
-     */
-    public function getAdditionalArea()
-    {
-        return $this->additionalArea;
-    }
-
-    /**
-     * @return string
+     * @return int
      */
     public function getBuildingType()
     {
@@ -885,7 +815,7 @@ class FlatFilter
     }
 
     /**
-     * @param string $buildingType
+     * @param int $buildingType
      */
     public function setBuildingType($buildingType)
     {

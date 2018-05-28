@@ -22,60 +22,11 @@ class HouseFilter
     private $idHouseFilter;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="constructionYearFrom", type="smallint", nullable=true, options={"unsigned"=true})
-     */
-    private $constructionYearFrom;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="constructionYearTo", type="smallint", nullable=true, options={"unsigned"=true})
-     */
-    private $constructionYearTo;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="roomsCount", type="string", length=20, nullable=true)
-     */
-    private $roomsCount;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="floorsCount", type="smallint", nullable=true)
-     */
-    private $floorsCount;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="buildingType", type="string", length=20, nullable=true)
-     */
-    private $buildingType;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="groundAreaFrom", type="float", nullable=true)
-     */
-    private $groundAreaFrom;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="groundAreaTo", type="float", nullable=true)
-     */
-    private $groundAreaTo;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=150)
      */
-    private $titile;
+    private $title;
 
     /**
      * @var string
@@ -127,6 +78,76 @@ class HouseFilter
     private $priceAreaTo;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="groundAreaFrom", type="float", nullable=true)
+     */
+    private $groundAreaFrom;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="groundAreaTo", type="float", nullable=true)
+     */
+    private $groundAreaTo;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="constructionYearFrom", type="smallint", nullable=true, options={"unsigned"=true})
+     */
+    private $constructionYearFrom;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="constructionYearTo", type="smallint", nullable=true, options={"unsigned"=true})
+     */
+    private $constructionYearTo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="roomsCountFrom", type="smallint", nullable=true, options={"unsigned"=true})
+     */
+    private $roomsCountFrom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="roomsCountTo", type="smallint", nullable=true, options={"unsigned"=true})
+     */
+    private $roomsCountTo;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="floorsCount", type="smallint", nullable=true, options={"unsigned"=true})
+     */
+    private $floorsCount;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="buildingType", type="smallint", nullable=true, options={"unsigned"=true})
+     */
+    private $buildingType;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="addedBy", type="smallint", nullable=true, options={"unsigned"=true})
+     */
+    private $addedBy;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="marketType", type="smallint", nullable=true, options={"unsigned"=true})
+     */
+    private $marketType;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="dateCreated", type="datetime")
@@ -148,18 +169,11 @@ class HouseFilter
     private $dateLastSearch;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="addedBy", type="smallint", nullable=true, options={"unsigned"=true})
+     * @ORM\Column(name="city", type="string", length=100, nullable=true)
      */
-    private $addedBy;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="marketType", type="smallint", nullable=true, options={"unsigned"=true})
-     */
-    private $marketType;
+    private $city;
 
     /**
      * @var string
@@ -174,13 +188,6 @@ class HouseFilter
      * @ORM\Column(name="subregion", type="string", length=100, nullable=true)
      */
     private $subregion;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="city", type="string", length=100, nullable=true)
-     */
-    private $city;
 
     /**
      * @var string
@@ -569,18 +576,18 @@ class HouseFilter
     /**
      * @return string
      */
-    public function getTitile()
+    public function getTitle()
     {
-        return $this->titile;
+        return $this->title;
     }
 
     /**
-     * @param string $titile
+     * @param string $title
      * @return Filter
      */
-    public function setTitile($titile)
+    public function setTitle($title)
     {
-        $this->titile = $titile;
+        $this->title = $title;
         return $this;
     }
 
@@ -720,27 +727,51 @@ class HouseFilter
     }
 
     /**
-     * Set roomsCount
+     * Set roomsCountFrom
      *
-     * @param string $roomsCount
+     * @param int $roomsCountFrom
      *
      * @return HouseFilter
      */
-    public function setRoomsCount($roomsCount)
+    public function setRoomsCountFrom($roomsCountFrom)
     {
-        $this->roomsCount = $roomsCount;
+        $this->roomsCountFrom = $roomsCountFrom;
 
         return $this;
     }
 
     /**
-     * Get roomsCount
+     * Get roomsCountFrom
      *
-     * @return string
+     * @return int
      */
-    public function getRoomsCount()
+    public function getRoomsCountFrom()
     {
-        return $this->roomsCount;
+        return $this->roomsCountFrom;
+    }
+
+    /**
+     * Get roomsCountTo
+     *
+     * @return int
+     */
+    public function getRoomsCountTo()
+    {
+        return $this->roomsCountTo;
+    }
+
+    /**
+     * Set roomsCountTo
+     *
+     * @param int $roomsCountTo
+     *
+     * @return HouseFilter
+     */
+    public function setRoomsCountTo($roomsCountTo)
+    {
+        $this->roomsCountTo = $roomsCountTo;
+
+        return $this;
     }
 
     /**
@@ -770,7 +801,7 @@ class HouseFilter
     /**
      * Set buildingType
      *
-     * @param string $buildingType
+     * @param int $buildingType
      *
      * @return HouseFilter
      */
@@ -784,7 +815,7 @@ class HouseFilter
     /**
      * Get buildingType
      *
-     * @return string
+     * @return int
      */
     public function getBuildingType()
     {

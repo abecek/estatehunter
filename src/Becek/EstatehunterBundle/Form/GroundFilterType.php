@@ -9,8 +9,7 @@
 namespace Becek\EstatehunterBundle\Form;
 
 
-use Becek\EstatehunterBundle\Entity\Filters\FlatFilter;
-
+use Becek\EstatehunterBundle\Entity\Filters\GroundFilter;
 use Symfony\Component\Form\AbstractType;
 
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -24,7 +23,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
-class FlatFilterType extends AbstractType
+class GroundFilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -64,54 +63,14 @@ class FlatFilterType extends AbstractType
             'currency' => '',
             'required'   => false,
             'attr' => array('class' => 'form-control')
-        ))->add('areaFrom', TextType::class, array(
-            'label' => 'Powierzchnia od: ',
+        ))->add('groundAreaFrom', TextType::class, array(
+            'label' => 'Powierzchnia działki od: ',
             'required'   => false,
             'attr' => array('class' => 'form-control')
-        ))->add('areaTo', TextType::class, array(
-            'label' => 'Powierzchnia do: ',
+        ))->add('groundAreaTo', TextType::class, array(
+            'label' => 'Powierzchnia działki do: ',
             'required'   => false,
             'attr' => array('class' => 'form-control')
-        ))->add('floorsCountFrom', RangeType::class, array(
-            'label' => 'Piętra całego budynku od: ',
-            'required'   => false,
-            'attr' => array(
-                'class' => 'form-control',
-                'min' => 0,
-                'max' => 50,
-            ),
-        ))->add('floorsCountTo', RangeType::class, array(
-            'label' => 'Piętra do: ',
-            'required'   => false,
-            'attr' => array(
-                'class' => 'form-control',
-                'min' => 0,
-                'max' => 50,
-            ),
-        ))->add('roomsCount', RangeType::class, array(
-            'label' => 'Liczba pokoi: ',
-            'required'   => false,
-            'attr' => array(
-                'class' => 'form-control',
-                'min' => 1,
-                'max' => 14,
-            ),
-        ))->add('constructionYearFrom', RangeType::class, array(
-            'label' => 'Rok budowy budynku od: ',
-            'required'   => false,
-            'attr' => array(
-                'class' => 'form-control',
-                'min' => 1900,
-                'max' => 2018,
-            ),
-        ))->add('constructionYearTo', RangeType::class, array(
-            'label' => 'Rok budowy budynku do: ',
-            'required'   => false,
-            'attr' => array(
-                'class' => 'form-control',
-                'min' => 1900,
-                'max' => 2018,
-            ),
         ))->add('addedBy', ChoiceType::class, array(
             'label' => 'Dodane przez: ',
             'attr' => array('class' => 'form-control'),
@@ -122,28 +81,12 @@ class FlatFilterType extends AbstractType
                 'Osoby prywatne' => 3,
                 'Inne' => 4,
             ),
-        ))->add('marketType', ChoiceType::class, array(
-            'label' => 'Rynek: ',
-            'attr' => array('class' => 'form-control'),
-            'choices' => array(
-                'Wszystkie' => 0,
-                'Pierwotny' => 1,
-                'Wtórny' => 2,
-            ),
-        ))->add('buildingType', ChoiceType::class, array(
-            'label' => 'Typ budynku: ',
-            'attr' => array('class' => 'form-control'),
-            'choices' => array(
-                'Wszystkie' => 0,
-                'Blok' => 1,
-                'Kamienica' => 2,
-            ),
         ))->add('description', TextareaType::class, array(
             'label' => 'Podaj opis: ',
             'required'   => false,
             'attr' => array('class' => 'form-control'),
         ))->add('submit', SubmitType::class, array(
-            'label' => 'Dodaj filtr mieszkań!',
+            'label' => 'Dodaj filtr działek!',
             'attr' => array('class' => 'btn btn-block btn-primary btn-lg')
         ));
 
@@ -152,7 +95,7 @@ class FlatFilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => FlatFilter::class,
+            'data_class' => GroundFilter::class,
         ));
     }
 

@@ -22,6 +22,20 @@ class GroundFilter
     private $idGroundFilter;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=150)
+     */
+    private $title;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=350, nullable=true)
+     */
+    private $description;
+
+    /**
      * @var float
      *
      * @ORM\Column(name="groundAreaFrom", type="float", nullable=true)
@@ -35,33 +49,6 @@ class GroundFilter
      */
     private $groundAreaTo;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="title", type="string", length=150)
-     */
-    private $titile;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=350, nullable=true)
-     */
-    private $description;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="areaFrom", type="decimal", scale=2, nullable=true)
-     */
-    private $areaFrom;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="areaTo", type="decimal", scale=2, nullable=true)
-     */
-    private $areaTo;
 
     /**
      * @var string
@@ -92,6 +79,14 @@ class GroundFilter
     private $priceAreaTo;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="addedBy", type="smallint", nullable=true, options={"unsigned"=true})
+     */
+    private $addedBy;
+
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="dateCreated", type="datetime")
@@ -113,18 +108,11 @@ class GroundFilter
     private $dateLastSearch;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="addedBy", type="smallint", nullable=true, options={"unsigned"=true})
+     * @ORM\Column(name="city", type="string", length=100, nullable=true)
      */
-    private $addedBy;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="marketType", type="smallint", nullable=true, options={"unsigned"=true})
-     */
-    private $marketType;
+    private $city;
 
     /**
      * @var string
@@ -139,13 +127,6 @@ class GroundFilter
      * @ORM\Column(name="subregion", type="string", length=100, nullable=true)
      */
     private $subregion;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="city", type="string", length=100, nullable=true)
-     */
-    private $city;
 
     /**
      * @var string
@@ -175,55 +156,6 @@ class GroundFilter
      */
     private $idUser;
 
-
-
-    /**
-     * Set areaFrom
-     *
-     * @param string $areaFrom
-     *
-     * @return Filter
-     */
-    public function setAreaFrom($areaFrom)
-    {
-        $this->areaFrom = $areaFrom;
-
-        return $this;
-    }
-
-    /**
-     * Get areaFrom
-     *
-     * @return string
-     */
-    public function getAreaFrom()
-    {
-        return $this->areaFrom;
-    }
-
-    /**
-     * Set areaTo
-     *
-     * @param string $areaTo
-     *
-     * @return Filter
-     */
-    public function setAreaTo($areaTo)
-    {
-        $this->areaTo = $areaTo;
-
-        return $this;
-    }
-
-    /**
-     * Get areaTo
-     *
-     * @return string
-     */
-    public function getAreaTo()
-    {
-        return $this->areaTo;
-    }
 
     /**
      * Set priceFrom
@@ -418,24 +350,6 @@ class GroundFilter
     }
 
     /**
-     * @return int
-     */
-    public function getMarketType()
-    {
-        return $this->marketType;
-    }
-
-    /**
-     * @param int $marketType
-     */
-    public function setMarketType($marketType)
-    {
-        $this->marketType = $marketType;
-
-        return $this;
-    }
-
-    /**
      * Set region
      *
      * @param string $region
@@ -534,18 +448,18 @@ class GroundFilter
     /**
      * @return string
      */
-    public function getTitile()
+    public function getTitle()
     {
-        return $this->titile;
+        return $this->title;
     }
 
     /**
-     * @param string $titile
+     * @param string $title
      * @return Filter
      */
-    public function setTitile($titile)
+    public function setTitle($title)
     {
-        $this->titile = $titile;
+        $this->title = $title;
         return $this;
     }
 

@@ -46,17 +46,351 @@
     <div class="starter-template">
         <h1>Dodaj nowe wyszukiwane</h1>
         <div class="row">
-            <div class="col-md-4">
-                {{ form_start(filterForm) }}
-                {{ form_widget(filterForm) }}
-                {{ form_end(filterForm) }}
-            </div>
-            <div class="col-md-8">
-                <div>
-
+            <div class="col-md-12" style="padding: 10px; margin: 5px;">
+                {{ form_start(flatForm) }}
+                <div class="form-row">
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(flatForm.city) }}
+                        {{ form_errors(flatForm.city) }}
+                        {{ form_widget(flatForm.city) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(flatForm.region) }}
+                        {{ form_errors(flatForm.region) }}
+                        {{ form_widget(flatForm.region) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(flatForm.subregion) }}
+                        {{ form_errors(flatForm.subregion) }}
+                        {{ form_widget(flatForm.subregion) }}
+                    </div>
                 </div>
-                <div>
 
+                <div class="form-row">
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(flatForm.priceFrom) }}
+                        {{ form_errors(flatForm.priceFrom) }}
+                        {{ form_widget(flatForm.priceFrom) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(flatForm.priceTo) }}
+                        {{ form_errors(flatForm.priceTo) }}
+                        {{ form_widget(flatForm.priceTo) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(flatForm.priceAreaFrom) }}
+                        {{ form_errors(flatForm.priceAreaFrom) }}
+                        {{ form_widget(flatForm.priceAreaFrom) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(flatForm.priceAreaTo) }}
+                        {{ form_errors(flatForm.priceAreaTo) }}
+                        {{ form_widget(flatForm.priceAreaTo) }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(flatForm.areaFrom) }}
+                        {{ form_errors(flatForm.areaFrom) }}
+                        {{ form_widget(flatForm.areaFrom) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(flatForm.areaTo) }}
+                        {{ form_errors(flatForm.areaTo) }}
+                        {{ form_widget(flatForm.areaTo) }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(flatForm.floorsCountFrom) }}
+                        {{ form_errors(flatForm.floorsCountFrom) }}
+                        {{ form_widget(flatForm.floorsCountFrom) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(flatForm.floorsCountTo) }}
+                        {{ form_errors(flatForm.floorsCountTo) }}
+                        {{ form_widget(flatForm.floorsCountTo) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(flatForm.roomsCount) }}
+                        {{ form_errors(flatForm.roomsCount) }}
+                        {{ form_widget(flatForm.roomsCount) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(flatForm.constructionYearFrom) }}
+                        {{ form_errors(flatForm.constructionYearFrom) }}
+                        {{ form_widget(flatForm.constructionYearFrom) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(flatForm.constructionYearTo) }}
+                        {{ form_errors(flatForm.constructionYearTo) }}
+                        {{ form_widget(flatForm.constructionYearTo) }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(flatForm.addedBy) }}
+                        {{ form_errors(flatForm.addedBy) }}
+                        {{ form_widget(flatForm.addedBy) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(flatForm.marketType) }}
+                        {{ form_errors(flatForm.marketType) }}
+                        {{ form_widget(flatForm.marketType) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(flatForm.buildingType) }}
+                        {{ form_errors(flatForm.buildingType) }}
+                        {{ form_widget(flatForm.buildingType) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(flatForm.title) }}
+                        {{ form_errors(flatForm.title) }}
+                        {{ form_widget(flatForm.title) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(flatForm.description) }}
+                        {{ form_errors(flatForm.description) }}
+                        {{ form_widget(flatForm.description) }}
+                    </div>
+                </div>
+
+                {{ form_widget(flatForm.submit) }}
+
+                {{ form_end(flatForm) }}
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12" style="padding: 10px; margin: 5px;">
+                {{ form_start(houseForm) }}
+                <div class="form-row">
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.city) }}
+                        {{ form_errors(houseForm.city) }}
+                        {{ form_widget(houseForm.city) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.region) }}
+                        {{ form_errors(houseForm.region) }}
+                        {{ form_widget(houseForm.region) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.subregion) }}
+                        {{ form_errors(houseForm.subregion) }}
+                        {{ form_widget(houseForm.subregion) }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.priceFrom) }}
+                        {{ form_errors(houseForm.priceFrom) }}
+                        {{ form_widget(houseForm.priceFrom) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.priceTo) }}
+                        {{ form_errors(houseForm.priceTo) }}
+                        {{ form_widget(houseForm.priceTo) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.priceAreaFrom) }}
+                        {{ form_errors(houseForm.priceAreaFrom) }}
+                        {{ form_widget(houseForm.priceAreaFrom) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.priceAreaTo) }}
+                        {{ form_errors(houseForm.priceAreaTo) }}
+                        {{ form_widget(houseForm.priceAreaTo) }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.areaFrom) }}
+                        {{ form_errors(houseForm.areaFrom) }}
+                        {{ form_widget(houseForm.areaFrom) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.areaTo) }}
+                        {{ form_errors(houseForm.areaTo) }}
+                        {{ form_widget(houseForm.areaTo) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.groundAreaFrom) }}
+                        {{ form_errors(houseForm.groundAreaFrom) }}
+                        {{ form_widget(houseForm.groundAreaFrom) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.groundAreaTo) }}
+                        {{ form_errors(houseForm.groundAreaTo) }}
+                        {{ form_widget(houseForm.groundAreaTo) }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.floorsCount) }}
+                        {{ form_errors(houseForm.floorsCount) }}
+                        {{ form_widget(houseForm.floorsCount) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.roomsCountFrom) }}
+                        {{ form_errors(houseForm.roomsCountFrom) }}
+                        {{ form_widget(houseForm.roomsCountFrom) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.roomsCountTo) }}
+                        {{ form_errors(houseForm.roomsCountTo) }}
+                        {{ form_widget(houseForm.roomsCountTo) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.constructionYearFrom) }}
+                        {{ form_errors(houseForm.constructionYearFrom) }}
+                        {{ form_widget(houseForm.constructionYearFrom) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.constructionYearTo) }}
+                        {{ form_errors(houseForm.constructionYearTo) }}
+                        {{ form_widget(houseForm.constructionYearTo) }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.addedBy) }}
+                        {{ form_errors(houseForm.addedBy) }}
+                        {{ form_widget(houseForm.addedBy) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.marketType) }}
+                        {{ form_errors(houseForm.marketType) }}
+                        {{ form_widget(houseForm.marketType) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.buildingType) }}
+                        {{ form_errors(houseForm.buildingType) }}
+                        {{ form_widget(houseForm.buildingType) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.title) }}
+                        {{ form_errors(houseForm.title) }}
+                        {{ form_widget(houseForm.title) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(houseForm.description) }}
+                        {{ form_errors(houseForm.description) }}
+                        {{ form_widget(houseForm.description) }}
+                    </div>
+                </div>
+
+                {{ form_widget(houseForm.submit) }}
+
+                {{ form_end(houseForm) }}
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12" style="padding: 10px; margin: 5px;">
+                {{ form_start(groundForm) }}
+                <div class="form-row">
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(groundForm.city) }}
+                        {{ form_errors(groundForm.city) }}
+                        {{ form_widget(groundForm.city) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(groundForm.region) }}
+                        {{ form_errors(groundForm.region) }}
+                        {{ form_widget(groundForm.region) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(groundForm.subregion) }}
+                        {{ form_errors(groundForm.subregion) }}
+                        {{ form_widget(groundForm.subregion) }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(groundForm.priceFrom) }}
+                        {{ form_errors(groundForm.priceFrom) }}
+                        {{ form_widget(groundForm.priceFrom) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(groundForm.priceTo) }}
+                        {{ form_errors(groundForm.priceTo) }}
+                        {{ form_widget(groundForm.priceTo) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(groundForm.priceAreaFrom) }}
+                        {{ form_errors(groundForm.priceAreaFrom) }}
+                        {{ form_widget(groundForm.priceAreaFrom) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(groundForm.priceAreaTo) }}
+                        {{ form_errors(groundForm.priceAreaTo) }}
+                        {{ form_widget(groundForm.priceAreaTo) }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(groundForm.groundAreaFrom) }}
+                        {{ form_errors(groundForm.groundAreaFrom) }}
+                        {{ form_widget(groundForm.groundAreaFrom) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(groundForm.groundAreaTo) }}
+                        {{ form_errors(groundForm.groundAreaTo) }}
+                        {{ form_widget(groundForm.groundAreaTo) }}
+                    </div>
+                </div>
+
+
+                <div class="form-row">
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(groundForm.addedBy) }}
+                        {{ form_errors(groundForm.addedBy) }}
+                        {{ form_widget(groundForm.addedBy) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(groundForm.marketType) }}
+                        {{ form_errors(groundForm.marketType) }}
+                        {{ form_widget(groundForm.marketType) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(groundForm.title) }}
+                        {{ form_errors(groundForm.title) }}
+                        {{ form_widget(groundForm.title) }}
+                    </div>
+                    <div class="form-group" style="margin: 10px;">
+                        {{ form_label(groundForm.description) }}
+                        {{ form_errors(groundForm.description) }}
+                        {{ form_widget(groundForm.description) }}
+                    </div>
+                </div>
+
+                {{ form_widget(groundForm.submit) }}
+
+                {{ form_end(groundForm) }}
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div>
+                    {%  if data is not null %}
+                        {{ dump(data) }}
+                    {%  endif %}
                 </div>
 
             </div>

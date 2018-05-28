@@ -2,6 +2,15 @@
 
 namespace Becek\EstatehunterBundle\Controller;
 
+use Becek\EstatehunterBundle\Entity\Filters\FlatFilter;
+use Becek\EstatehunterBundle\Entity\Filters\GroundFilter;
+use Becek\EstatehunterBundle\Entity\Filters\HouseFilter;
+
+use Becek\EstatehunterBundle\Form\FlatFilterType;
+
+
+use Becek\EstatehunterBundle\Form\GroundFilterType;
+use Becek\EstatehunterBundle\Form\HouseFilterType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -54,95 +63,78 @@ class FiltersController extends Controller
      */
     public function newFilterAction(Request $request)
     {
+        $data = null;
+        $em = $this->getDoctrine()->getManager();
 
-        $form = $this->createFormBuilder(null, array(
-            'attr' => array('class' => 'form'),
-        ))->add('title', TextType::class, array(
-            'label' => 'Nazwa: ',
-            'attr' => array('class' => 'form-control'),
-        ))->add('description', TextareaType::class, array(
-            'label' => 'Opis: ',
-            'required' => false,
-            'attr' => array('class' => 'form-control'),
-        ))->add('offerType', ChoiceType::class, array(
-            'label' => 'Rodzaj ogłoszenia:',
-            'attr' => array('class' => 'form-control'),
-            'choices' => array(
-                'na sprzedaż' => 'sprzedaz',
-                'do wynajęcia' => 'wynajem',
-                //'zamiana' => 'zamiana',,
-                //'pozostałe' => 'pozostale',
-                //    'inne oferty' => 'inne',
-            ),
-        ))->add('priceFrom', MoneyType::class, array(
-            'label' => 'Cena od:',
-            'currency' => '',
-            'required'   => false,
-            'attr' => array('class' => 'form-control')
-        ))->add('priceTo', MoneyType::class, array(
-            'label' => 'Cena do:',
-            'currency' => '',
-            'required'   => false,
-            'attr' => array('class' => 'form-control')
-        ))->add('priceByAreaFrom', MoneyType::class, array(
-            'label' => 'Cena za m^2 od:',
-            'currency' => '',
-            'required'   => false,
-            'attr' => array('class' => 'form-control')
-        ))->add('priceByAreaTo', MoneyType::class, array(
-            'label' => 'Cena za m^2 do:',
-            'currency' => '',
-            'required'   => false,
-            'attr' => array('class' => 'form-control')
-        ))->add('areaFrom', TextType::class, array(
-            'label' => 'Powierzchnia od:',
-            'required'   => false,
-            'attr' => array('class' => 'form-control')
-        ))->add('areaTo', TextType::class, array(
-            'label' => 'Powierzchnia do:',
-            'required'   => false,
-            'attr' => array('class' => 'form-control')
-        ))->add('localizationRegion', TextType::class, array(
-            'label' => 'Lokalizacja(województwo):',
-            'required'   => false,
-            'attr' => array('class' => 'form-control')
-        ))->add('localizationSubregion', TextType::class, array(
-            'label' => 'Lokalizacja(powiat):',
-            'required'   => false,
-            'attr' => array('class' => 'form-control')
-        ))->add('localizationTown', TextType::class, array(
-            'label' => 'Lokalizacja(miejscowość):',
-            'required'   => false,
-            'attr' => array('class' => 'form-control')
-        ))->add('addedBy', ChoiceType::class, array(
-            'label' => 'Dodane przez:',
-            'attr' => array('class' => 'form-control'),
-            'choices' => array(
-                'Wszystkich' => null,
-                'Biura nieruchomości' => 'estate agencies',
-                'Gazety' => 'newspapers',
-                'Osoby prywatne' => 'private persons',
-                'Inne' => 'others',
-            ),
-        ))->add('searchFrequency', NumberType::class, array(
-            'label' => 'Częstotliwość wyszukiwania:',
-            'attr' => array('class' => 'form-control'),
-        ))->add('submit', SubmitType::class, array(
-            'label' => 'Szukaj!',
-            'attr' => array('class' => 'btn btn-block btn-primary btn-lg')
-        ))->getForm();
+        $flatFilter = new FlatFilter();
+        $form1 = $this->createForm(FlatFilterType::class, $flatFilter, array(
+            'attr' => array('class' => 'form-row'),
+        ));
 
+        $form1->handleRequest($request);
+        if($form1->isSubmitted() && $form1->isValid()){
+            $flatFilter->setCity(strtolower($flatFilter->getCity()));
+            $flatFilter->setRegion(strtolower($flatFilter->getRegion()));
+            $flatFilter->setSubregion(strtolower($flatFilter->getSubregion()));
 
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+            $flatFilter->setDateCreated(new \DateTime());
+            $flatFilter->setIdUser(1);
 
+            $em->persist($flatFilter);
+            $em->flush();
+
+            $data = $flatFilter;
         }
 
 
+        $houseFilter = new HouseFilter();
+        $form2 = $this->createForm(HouseFilterType::class, $houseFilter, array(
+            'attr' => array('class' => 'form-row'),
+        ));
+
+        $form2->handleRequest($request);
+        if($form2->isSubmitted() && $form2->isValid()){
+            $houseFilter->setCity(strtolower($houseFilter->getCity()));
+            $houseFilter->setRegion(strtolower($houseFilter->getRegion()));
+            $houseFilter->setSubregion(strtolower($houseFilter->getSubregion()));
+
+            $houseFilter->setDateCreated(new \DateTime());
+            $houseFilter->setIdUser(1);
+
+            $em->persist($houseFilter);
+            $em->flush();
+
+            $data = $houseFilter;
+        }
+
+
+        $groundFilter = new GroundFilter();
+        $form3 = $this->createForm(GroundFilterType::class, $groundFilter, array(
+            'attr' => array('class' => 'form-row'),
+        ));
+
+        $form3->handleRequest($request);
+        if($form3->isSubmitted() && $form3->isValid()){
+            $groundFilter->setCity(strtolower($groundFilter->getCity()));
+            $groundFilter->setRegion(strtolower($groundFilter->getRegion()));
+            $groundFilter->setSubregion(strtolower($groundFilter->getSubregion()));
+
+            $groundFilter->setDateCreated(new \DateTime());
+            $groundFilter->setIdUser(1);
+
+            $em->persist($groundFilter);
+            $em->flush();
+
+            $data = $groundFilter;
+        }
+
+
+
         return $this->render('@BecekEstatehunter/Filters/newFilter.html.twig', array(
-            'filterForm' => $form->createView(),
-            //'data' => $data,
+            'flatForm' => $form1->createView(),
+            'houseForm' => $form2->createView(),
+            'groundForm' => $form3->createView(),
+            'data' => $data,
         ));
     }
 
