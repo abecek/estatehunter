@@ -158,6 +158,30 @@ class GroundFilter
 
 
     /**
+     *
+     * @ORM\OneToMany(targetEntity="Becek\EstatehunterBundle\Entity\Search", mappedBy="groundFilter")
+     */
+    private $searches;
+
+    /**
+     * @return mixed
+     */
+    public function getSearches()
+    {
+        return $this->searches;
+    }
+
+    /**
+     * @param mixed $searches
+     */
+    public function setSearches($searches)
+    {
+        $this->searches = $searches;
+    }
+
+
+
+    /**
      * Set priceFrom
      *
      * @param string $priceFrom

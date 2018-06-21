@@ -10,4 +10,12 @@ namespace Becek\EstatehunterBundle\Repository\Filters;
  */
 class FlatFilterRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findOrderedByDateLastSearchWithLimit($limit)
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT f FROM BecekEstatehunterBundle:Filters\FlatFilter f ORDER BY f.dateLastSearch')
+            ->setMaxResults($limit)
+            ->getResult();
+    }
 }

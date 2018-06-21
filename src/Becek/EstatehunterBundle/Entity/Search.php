@@ -21,12 +21,6 @@ class Search
      */
     private $idSearch;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idFilter", type="integer", options={"unsigned"=true})
-     */
-    private $idFilter;
 
     /**
      * @var \DateTime
@@ -55,6 +49,26 @@ class Search
      * @ORM\Column(name="url", type="string", length=255)
      */
     private $url;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Becek\EstatehunterBundle\Entity\Filters\FlatFilter", inversedBy="searches")
+     * @ORM\JoinColumn(name="idFlatFilter", referencedColumnName="idFlatFilter")
+     */
+    private $flatFilter;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Becek\EstatehunterBundle\Entity\Filters\HouseFilter", inversedBy="searches")
+     * @ORM\JoinColumn(name="idHouseFilter", referencedColumnName="idHouseFilter")
+     */
+    private $houseFilter;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Becek\EstatehunterBundle\Entity\Filters\GroundFilter", inversedBy="searches")
+     * @ORM\JoinColumn(name="idGroundFilter", referencedColumnName="idGroundFilter")
+     */
+    private $groundFilter;
+
 
 
     /**

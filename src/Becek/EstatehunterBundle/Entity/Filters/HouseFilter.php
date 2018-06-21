@@ -218,6 +218,29 @@ class HouseFilter
     private $idUser;
 
 
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="Becek\EstatehunterBundle\Entity\Search", mappedBy="houseFilter")
+     */
+    private $searches;
+
+    /**
+     * @return mixed
+     */
+    public function getSearches()
+    {
+        return $this->searches;
+    }
+
+    /**
+     * @param mixed $searches
+     */
+    public function setSearches($searches)
+    {
+        $this->searches = $searches;
+    }
+
+
 
     /**
      * Set areaFrom

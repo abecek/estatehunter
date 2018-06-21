@@ -142,8 +142,9 @@ class HouseFilterType extends AbstractType
             'attr' => array('class' => 'form-control'),
             'choices' => array(
                 'Wszystkie' => 0,
-                'Blok' => 1,
-                'Kamienica' => 2,
+                'Dom wolnostojący' => 1,
+                'Dom wielorodzinny' => 2,
+                'Dom szeregowy' => 3,
             ),
         ))->add('description', TextareaType::class, array(
             'label' => 'Podaj opis: ',

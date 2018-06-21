@@ -203,6 +203,31 @@ class FlatFilter
      */
     private $idUser;
 
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="Becek\EstatehunterBundle\Entity\Search", mappedBy="flatFilter")
+     */
+    private $searches;
+
+    /**
+     * @return mixed
+     */
+    public function getSearches()
+    {
+        return $this->searches;
+    }
+
+    /**
+     * @param mixed $searches
+     */
+    public function setSearches($searches)
+    {
+        $this->searches = $searches;
+    }
+
+
+
     /**
      * Set areaFrom
      *
@@ -824,5 +849,5 @@ class FlatFilter
         return $this;
     }
 
-}
 
+}
