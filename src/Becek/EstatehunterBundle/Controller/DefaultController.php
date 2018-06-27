@@ -17,25 +17,10 @@ use Becek\EstatehunterBundle\Utils\Scrapers\DomGratkaScraper;
 use Becek\EstatehunterBundle\Utils\Scrapers\OtodomScraper;
 use Becek\EstatehunterBundle\Utils\Scrapers\OlxScraper;
 
+use Becek\EstatehunterBundle\Utils\PolishCharsExtractor;
+
 class DefaultController extends Controller
 {
-
-    private function changingPolishChars($string)
-    {
-        $a = array( 'Ę', 'Ó', 'Ą', 'Ś', 'Ł', 'Ż', 'Ź', 'Ć', 'Ń', 'ę', 'ó', 'ą',
-            'ś', 'ł', 'ż', 'ź', 'ć', 'ń' );
-        $b = array( 'E', 'O', 'A', 'S', 'L', 'Z', 'Z', 'C', 'N', 'e', 'o', 'a',
-            's', 'l', 'z', 'z', 'c', 'n' );
-
-        $string = str_replace( $a, $b, $string );
-        $string = preg_replace( '#[^a-z0-9]#is', ' ', $string );
-        $string = trim( $string );
-        $string = preg_replace( '#\s{2,}#', ' ', $string );
-        $string = str_replace( ' ', '-', $string );
-        $string = strtolower($string);
-
-        return $string;
-    }
 
     public function indexAction(){
 
@@ -139,9 +124,9 @@ class DefaultController extends Controller
             $options['priceByAreaTo'] = $data['priceByAreaTo'];
             $options['areaFrom'] = $data['areaFrom'];
             $options['areaTo'] = $data['areaTo'];
-            $options['localization']['subregion'] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $data['localizationSubregion']));
-            $options['localization']['region'] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $data['localizationRegion']));
-            $options['localization']['town'] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $data['localizationTown']));
+            $options['localization']['subregion'] = PolishCharsExtractor::changePolishChars(preg_replace('<<(.*?)>>', '', $data['localizationSubregion']));
+            $options['localization']['region'] = PolishCharsExtractor::changePolishChars(preg_replace('<<(.*?)>>', '', $data['localizationRegion']));
+            $options['localization']['town'] = PolishCharsExtractor::changePolishChars(preg_replace('<<(.*?)>>', '', $data['localizationTown']));
             $options['addedBy'] = $data['addedBy'];
 
             $domGratkaGenerator = new DomGratkaScraper();
@@ -246,9 +231,9 @@ class DefaultController extends Controller
             $options['priceByAreaTo'] = $data['priceByAreaTo'];
             $options['areaFrom'] = $data['areaFrom'];
             $options['areaTo'] = $data['areaTo'];
-            $options['localization']['town'] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $data['localizationTown']));
-            $options['localization']['subregion'] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $data['localizationSubregion']));
-            $options['localization']['region'] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $data['localizationRegion']));
+            $options['localization']['town'] = PolishCharsExtractor::changePolishChars(preg_replace('<<(.*?)>>', '', $data['localizationTown']));
+            $options['localization']['subregion'] = PolishCharsExtractor::changePolishChars(preg_replace('<<(.*?)>>', '', $data['localizationSubregion']));
+            $options['localization']['region'] = PolishCharsExtractor::changePolishChars(preg_replace('<<(.*?)>>', '', $data['localizationRegion']));
             $options['addedBy'] = $data['addedBy'];
 
             /*
@@ -420,9 +405,9 @@ class DefaultController extends Controller
             $options['priceTo'] = $data['priceTo'];
             $options['areaFrom'] = $data['areaFrom'];
             $options['areaTo'] = $data['areaTo'];
-            $options['localization']['subregion'] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $data['localizationSubregion']));
-            $options['localization']['region'] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $data['localizationRegion']));
-            $options['localization']['town'] = $this->changingPolishChars(preg_replace('<<(.*?)>>', '', $data['localizationTown']));
+            $options['localization']['subregion'] = PolishCharsExtractor::changePolishChars(preg_replace('<<(.*?)>>', '', $data['localizationSubregion']));
+            $options['localization']['region'] = PolishCharsExtractor::changePolishChars(preg_replace('<<(.*?)>>', '', $data['localizationRegion']));
+            $options['localization']['town'] = PolishCharsExtractor::changePolishChars(preg_replace('<<(.*?)>>', '', $data['localizationTown']));
             $options['addedBy'] = $data['addedBy'];
 
             $olxGenerator = new OlxScraper();

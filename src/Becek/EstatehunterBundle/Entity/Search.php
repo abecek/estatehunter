@@ -15,11 +15,11 @@ class Search
     /**
      * @var int
      *
-     * @ORM\Column(name="idSearch", type="integer", options={"unsigned"=true})
+     * @ORM\Column(name="id", type="integer", options={"unsigned"=true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $idSearch;
+    private $id;
 
 
     /**
@@ -72,28 +72,46 @@ class Search
 
 
     /**
-     * Get idSearch
      *
+     * @ORM\ManyToMany(targetEntity="Flat", inversedBy="searches")
+     * @ORM\JoinTable(name="flat_search_results")
+     */
+    private $flats;
+
+    /**
+     *
+     * @ORM\ManyToMany(targetEntity="House", inversedBy="searches")
+     * @ORM\JoinTable(name="house_search_results")
+     */
+    private $houses;
+
+    /**
+     *
+     * @ORM\ManyToMany(targetEntity="Ground", inversedBy="searches")
+     * @ORM\JoinTable(name="ground_search_results")
+     */
+    private $grounds;
+
+
+
+    /**
      * @return int
      */
-    public function getIdSearch()
+    public function getId()
     {
-        return $this->idSearch;
+        return $this->id;
     }
 
     /**
-     * Set idFilter
-     *
-     * @param integer $idFilter
-     *
+     * @param int $id
      * @return Search
      */
-    public function setIdFilter($idFilter)
+    public function setId($id)
     {
-        $this->idFilter = $idFilter;
-
+        $this->id = $id;
         return $this;
     }
+
 
     /**
      * Get idFilter
@@ -200,5 +218,107 @@ class Search
     {
         return $this->url;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getFlatFilter()
+    {
+        return $this->flatFilter;
+    }
+
+    /**
+     * @param mixed $flatFilter
+     */
+    public function setFlatFilter($flatFilter)
+    {
+        $this->flatFilter = $flatFilter;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHouseFilter()
+    {
+        return $this->houseFilter;
+    }
+
+    /**
+     * @param mixed $houseFilter
+     */
+    public function setHouseFilter($houseFilter)
+    {
+        $this->houseFilter = $houseFilter;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGroundFilter()
+    {
+        return $this->groundFilter;
+    }
+
+    /**
+     * @param mixed $groundFilter
+     */
+    public function setGroundFilter($groundFilter)
+    {
+        $this->groundFilter = $groundFilter;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFlats()
+    {
+        return $this->flats;
+    }
+
+    /**
+     * @param mixed $flats
+     */
+    public function setFlats($flats)
+    {
+        $this->flats = $flats;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHouses()
+    {
+        return $this->houses;
+    }
+
+    /**
+     * @param mixed $houses
+     * @return Search
+     */
+    public function setHouses($houses)
+    {
+        $this->houses = $houses;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGrounds()
+    {
+        return $this->grounds;
+    }
+
+    /**
+     * @param mixed $grounds
+     * @return Search
+     */
+    public function setGrounds($grounds)
+    {
+        $this->grounds = $grounds;
+        return $this;
+    }
+
+
 }
 

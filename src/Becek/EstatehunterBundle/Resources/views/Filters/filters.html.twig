@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+    <title>Starter Template for Bootstrap</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{{ asset('bundles/becekestatehunter/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ asset('bundles/becekestatehunter/css/main.css') }}" rel="stylesheet">
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="{{ path('homepage') }}">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('gratka') }}">DomGratka</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('otodom') }}">Otodom</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('olx') }}">Olx</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('newFilter') }}">Dodaj nowy filtr</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="starter-template">
+        <h1>Lista filtrów</h1>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12" style="">
+                {%  if flatFilters is not empty %}
+                    <h3>Filtry mieszkań</h3>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Desc</th>
+                                <th scope="col">Date Created</th>
+                                <th scope="col">Date Last Search</th>
+                                <th scope="col">Rezultaty</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <form name="flatFiltersForm" method="POST" action="{{ path('runFilterSearch') }}">
+                                {% for filter in flatFilters %}
+                                    <tr>
+                                        <td>{{ filter.idFlatFilter }}</td>
+                                        <td>{{ filter.title }}</td>
+                                        <td>{{ filter.description }}</td>
+                                        <td>{{ filter.dateCreated|date("Y-m-d H:i:s") }}</td>
+                                        <td>
+                                            {% if filter.dateLastSearch is null %}
+                                                Brak
+                                            {% else %}
+                                                {{ filter.dateLastSearch|date("Y-m-d H:i:s") }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if filter.searches is not empty %}
+                                                {{ dump(filter.searches) }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <input type="hidden" id="idFlatFilter" name="idFlatFilter" value="{{ filter.idFlatFilter }}">
+                                                <button type="submit" id="form_submit" class="btn btn-primary btn-sm">Run!</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </form>
+                        </tbody>
+                    </table>
+                {%  endif %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" style="">
+                {%  if houseFilters is not empty %}
+                    <h3>Filtry domów</h3>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Desc</th>
+                                <th scope="col">Date Created</th>
+                                <th scope="col">Date Last Search</th>
+                                <th scope="col">Rezultaty</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <form name="houseFiltersForm" method="POST" action="{{ path('runFilterSearch') }}">
+                                {% for filter in houseFilters %}
+                                    <tr>
+                                        <td>{{ filter.idHouseFilter }}</td>
+                                        <td>{{ filter.title }}</td>
+                                        <td>{{ filter.description }}</td>
+                                        <td>{{ filter.dateCreated|date("Y-m-d H:i:s") }}</td>
+                                        <td>
+                                            {% if filter.dateLastSearch is null %}
+                                                Brak
+                                            {% else %}
+                                                {{ filter.dateLastSearch|date("Y-m-d H:i:s") }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if filter.searches is not empty %}
+                                                {{ dump(filter.searches) }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <input type="hidden" id="idFlatFilter" name="idFlatFilter" value="{{ filter.idHouseFilter }}">
+                                                <button type="submit" id="form_submit" class="btn btn-primary btn-sm">Run!</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </form>
+                        </tbody>
+                    </table>
+                {%  endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" style="">
+                {%  if groundFilters is not empty %}
+                    <h3>Filtry działek</h3>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Desc</th>
+                                <th scope="col">Date Created</th>
+                                <th scope="col">Date Last Search</th>
+                                <th scope="col">Rezultaty</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <form name="groundFiltersForm" method="POST" action="{{ path('runFilterSearch') }}">
+                                {% for filter in groundFilters %}
+                                    <tr>
+                                        <td>{{ filter.idGroundFilter }}</td>
+                                        <td>{{ filter.title }}</td>
+                                        <td>{{ filter.description }}</td>
+                                        <td>{{ filter.dateCreated|date("Y-m-d H:i:s") }}</td>
+                                        <td>
+                                            {% if filter.dateLastSearch is null %}
+                                                Brak
+                                            {% else %}
+                                                {{ filter.dateLastSearch|date("Y-m-d H:i:s") }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if filter.searches is not empty %}
+                                                {{ dump(filter.searches) }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <input type="hidden" id="idFlatFilter" name="idFlatFilter" value="{{ filter.idGroundFilter }}">
+                                                <button type="submit" id="form_submit" class="btn btn-primary btn-sm">Run!</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </form>
+                        </tbody>
+                    </table>
+                {%  endif %}
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div>
+                    {%  if data is not null %}
+                        {{ dump(data) }}
+                    {%  endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div><!-- /.container -->
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="{{ asset('bundles/becekestatehunter/js/jquery-3.2.1.min.js') }}"></script>
+<script src="{{ asset('bundles/becekestatehunter/js/jquery-slim.min.js') }}"></script>
+<script src="{{ asset('bundles/becekestatehunter/js/popper.min.js') }}"></script>
+<script src="{{ asset('bundles/becekestatehunter/js/bootstrap.min.js') }}"></script>
+
+{#
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="../../../../assets/js/ie10-viewport-bug-workaround.js"></script>
+#}
+
+</body>
+</html>

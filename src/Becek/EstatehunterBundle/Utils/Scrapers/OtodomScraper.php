@@ -218,9 +218,11 @@ class OtodomScraper extends OfferScraperAbstract implements OfferGeneratorInterf
         }
         $this->offersAsIdsArray = array_keys($this->offersAsObjectsArray);
 
+        /*
         echo '<br>';
         var_dump(count($this->offersAsIdsArray));
         echo '<br>';
+        */
 
         return $this->offersAsObjectsArray;
     }
@@ -307,16 +309,6 @@ class OtodomScraper extends OfferScraperAbstract implements OfferGeneratorInterf
 
             if($rest !== null) {
                 $data = preg_split('/\s+/', $rest->textContent, -1, PREG_SPLIT_NO_EMPTY);
-                //$data = explode(" ", $rest->textContent);
-                /*
-                //var_dump($rest->textContent);
-                if(count($data) >= 8){
-                   // var_dump($rest->textContent);
-                    //echo '<br>';
-                    //var_dump($data);
-                    //echo '<br><br>';
-                }
-                */
 
                 //FLATS
                 if($this->category === 'mieszkanie') {

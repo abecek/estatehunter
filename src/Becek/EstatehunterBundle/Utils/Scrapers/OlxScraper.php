@@ -35,7 +35,7 @@ class OlxScraper extends OfferScraperAbstract implements OfferGeneratorInterface
     /**
      * @var int
      */
-    protected static $offersPerPage = 39;
+    protected $offersPerPage = 38;
 
     /**
      * @var int|null
@@ -55,23 +55,6 @@ class OlxScraper extends OfferScraperAbstract implements OfferGeneratorInterface
         return self::$offersPerPage;
     }
 
-    // todo: wywalic stad do jakies klasy i na static
-    private function changingPolishChars($string)
-    {
-        $a = array( 'Ę', 'Ó', 'Ą', 'Ś', 'Ł', 'Ż', 'Ź', 'Ć', 'Ń', 'ę', 'ó', 'ą',
-            'ś', 'ł', 'ż', 'ź', 'ć', 'ń' );
-        $b = array( 'E', 'O', 'A', 'S', 'L', 'Z', 'Z', 'C', 'N', 'e', 'o', 'a',
-            's', 'l', 'z', 'z', 'c', 'n' );
-
-        $string = str_replace( $a, $b, $string );
-        $string = preg_replace( '#[^a-z0-9]#is', ' ', $string );
-        $string = trim( $string );
-        $string = preg_replace( '#\s{2,}#', ' ', $string );
-        $string = str_replace( ' ', '-', $string );
-        $string = strtolower($string);
-
-        return $string;
-    }
 
     /**
      * @param array $options
@@ -106,23 +89,23 @@ class OlxScraper extends OfferScraperAbstract implements OfferGeneratorInterface
             $url .= $town .'/?';
         }
 
-        if($this->priceFrom !== null) $url .= 'search[filter_float_price:from]='. $this->priceFrom .'&amp;';
-        if($this->priceTo !== null) $url .= 'search[filter_float_price:to]='. $this->priceTo .'&amp;';
+        if($this->priceFrom !== null) $url .= 'search[filter_float_price:from]='. $this->priceFrom .'&';
+        if($this->priceTo !== null) $url .= 'search[filter_float_price:to]='. $this->priceTo .'&';
 
-        if($this->areaFrom !== null) $url .= 'search[filter_float_m:from]='. $this->areaFrom .'&amp;';
-        if($this->areaTo !== null) $url .= 'search[filter_float_m:to]='. $this->areaTo .'&amp;';
+        if($this->areaFrom !== null) $url .= 'search[filter_float_m:from]='. $this->areaFrom .'&';
+        if($this->areaTo !== null) $url .= 'search[filter_float_m:to]='. $this->areaTo .'&';
 
         if($this->addedBy !== null){
-            $url .= 'search[private_business]='. $this->addedBy .'&amp;';
+            $url .= 'search[private_business]='. $this->addedBy .'&';
         }
 
-        $url .= 'search[dist]=0&amp;';
+        $url .= 'search[dist]=0&';
         if($currentPage != 1) {
             $url .= 'page=' . $currentPage;
         }
 
         $url = rtrim($url, '?');
-        $url = rtrim($url, '&amp;');
+        $url = rtrim($url, '&');
 
         return $url;
     }
@@ -184,21 +167,24 @@ class OlxScraper extends OfferScraperAbstract implements OfferGeneratorInterface
             $this->domX = new \DOMXPath($this->dom);
 
             if ($currentPage == 1) {
-                // todo: blad kiedy za filtry
-                $pagesCount = $this->domX->query('//div[@id="innerLayout"]/div[@id="listContainer"]/section/div[@class="wrapper"]/div[@class="content"]/div[@class="pager rel clr"]/form/fieldset/input[@type="submit"]')->item(0)->attributes->item(0);
-                //$pagesCount = null;
-                ///$pagesCount = $this->dom->getElementsByTagNameNS('input', 'input');
-                if ($pagesCount !== null) {
-                    $this->pagesCount = intval(ltrim($pagesCount->textContent, '{totalPages:'));
+
+                //OLD CODE
+                //$pagesCount = $this->domX->query('//div[@id="innerLayout"]/div[@id="listContainer"]/section/div[@class="wrapper"]/div[@class="content"]/div[@class="pager rel clr"]/form/fieldset/input[@type="submit"]')->item(0)->attributes->item(0);
+                //var_dump($this->domX->query('//div[@id="innerLayout"]/div[@id="listContainer"]/section/div[@class="wrapper"]/div[@class="content"]/div[@class="rel listHandler "]/table/tbody/tr/td/div/p')->item(0));
+                $pagesCount = $this->domX->query('//div[@id="innerLayout"]/div[@id="listContainer"]/section/div[@class="wrapper"]/div[@class="content"]/div[@class="rel listHandler "]/table/tbody/tr/td/div/p')->item(0);
+
+                if ($pagesCount != null) {
+                    $this->offersCount = intval(ltrim($pagesCount->textContent, '{totalPages:'));
+                    $this->offersCount = intval(ltrim($pagesCount->textContent, 'Znaleziono '));
+
+                    $this->pagesCount = intval(floor($this->offersCount/$this->offersPerPage)) + 1;
                 } else {
                     $this->pagesCount = 1;
                 }
+
             }
 
             $allArticlesWithOffers = $this->domX->query('//div[@id="innerLayout"]/div[@id="listContainer"]/section/div[@class="wrapper"]/div[@class="content"]/div/table[@id="offers_table"]/tbody/tr[@class="wrap"]/td/table[@summary="Ogłoszenie"]');
-
-            //var_dump($allArticlesWithOffers->item(0));
-            //exit;
 
             $temp = array();
             foreach ($allArticlesWithOffers as $article) {
@@ -211,6 +197,7 @@ class OlxScraper extends OfferScraperAbstract implements OfferGeneratorInterface
             //var_dump($temp);
 
             foreach ($temp as $id) {
+                //$id = ltrim($id, 'fixed breakword  ad_id');
                 $olxOffer = $this->createOfferFromSummary($id);
                 $this->offersAsObjectsArray[$id] = $olxOffer;
             }
@@ -219,10 +206,12 @@ class OlxScraper extends OfferScraperAbstract implements OfferGeneratorInterface
         }
         $this->offersAsIdsArray = array_keys($this->offersAsObjectsArray);
 
+        /*
         echo '<br>';
         var_dump(count($this->offersAsIdsArray));
         echo '<br>';
         var_dump($this->pagesCount);
+        */
 
         return $this->offersAsObjectsArray;
     }
@@ -237,7 +226,7 @@ class OlxScraper extends OfferScraperAbstract implements OfferGeneratorInterface
         $dom = $this->domX->query("//table[@class='". $id ."']")->item(0);
         if($dom !== null) {
             $tempArray = explode(' ', $id);
-            $correctId = ltrim($tempArray[3], 'ad_');
+            $correctId = ltrim($tempArray[3], 'ad_id');
             $olxOffer->setIdOffer($correctId);
 
             $title = $dom->getElementsByTagName("strong")->item(0);
@@ -268,7 +257,6 @@ class OlxScraper extends OfferScraperAbstract implements OfferGeneratorInterface
             $olxOffer->setCategory($this->category);
         }
 
-        //var_dump($olxOffer);
         return $olxOffer;
     }
 }

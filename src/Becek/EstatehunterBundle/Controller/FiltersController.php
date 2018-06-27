@@ -6,6 +6,9 @@ use Becek\EstatehunterBundle\Entity\Filters\FlatFilter;
 use Becek\EstatehunterBundle\Entity\Filters\GroundFilter;
 use Becek\EstatehunterBundle\Entity\Filters\HouseFilter;
 
+use Becek\EstatehunterBundle\Entity\Flat;
+use Becek\EstatehunterBundle\Entity\Ground;
+use Becek\EstatehunterBundle\Entity\House;
 use Becek\EstatehunterBundle\Form\FlatFilterType;
 
 
@@ -32,22 +35,6 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
  */
 class FiltersController extends Controller
 {
-    private function changingPolishChars($string)
-    {
-        $a = array( 'Ę', 'Ó', 'Ą', 'Ś', 'Ł', 'Ż', 'Ź', 'Ć', 'Ń', 'ę', 'ó', 'ą',
-            'ś', 'ł', 'ż', 'ź', 'ć', 'ń' );
-        $b = array( 'E', 'O', 'A', 'S', 'L', 'Z', 'Z', 'C', 'N', 'e', 'o', 'a',
-            's', 'l', 'z', 'z', 'c', 'n' );
-
-        $string = str_replace( $a, $b, $string );
-        $string = preg_replace( '#[^a-z0-9]#is', ' ', $string );
-        $string = trim( $string );
-        $string = preg_replace( '#\s{2,}#', ' ', $string );
-        $string = str_replace( ' ', '-', $string );
-        $string = strtolower($string);
-
-        return $string;
-    }
 
     /**
      * @Route("/getform", name="getForm")
@@ -136,6 +123,35 @@ class FiltersController extends Controller
             'groundForm' => $form3->createView(),
             'data' => $data,
         ));
+    }
+
+    /**
+     * @Route("/list", name="filters")
+     */
+    public function filtersAction(Request $request)
+    {
+        $data = null;
+        $em = $this->getDoctrine()->getManager();
+
+        $flatFilters = $em->getRepository(FlatFilter::class)->findAll();
+        $houseFilters = $em->getRepository(HouseFilter::class)->findAll();
+        $groundFilters = $em->getRepository(GroundFilter::class)->findAll();
+
+        return $this->render('@BecekEstatehunter/Filters/filters.html.twig', array(
+            'flatFilters' => $flatFilters,
+            'houseFilters' => $houseFilters,
+            'groundFilters' => $groundFilters,
+            'data' => $data,
+        ));
+    }
+
+    /**
+     * @Route("/runFilterSearch", name="runFilterSearch")
+     * @Method({"POST"})
+     */
+    public function runFilterSearchAction(Request $request)
+    {
+        return new Response('DUPA');
     }
 
 }
