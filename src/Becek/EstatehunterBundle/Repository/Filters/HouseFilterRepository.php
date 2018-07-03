@@ -10,6 +10,10 @@ namespace Becek\EstatehunterBundle\Repository\Filters;
  */
 class HouseFilterRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param $limit
+     * @return array
+     */
     public function findOrderedByDateLastSearchWithLimit($limit)
     {
         return $this->getEntityManager()
@@ -18,4 +22,16 @@ class HouseFilterRepository extends \Doctrine\ORM\EntityRepository
             ->setMaxResults($limit)
             ->getResult();
     }
+
+    /**
+     * @return array
+     */
+    public function getHouseFilterCount()
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT count(f) FROM BecekEstatehunterBundle:Filters\HouseFilter f')
+            ->getResult();
+    }
+
 }
