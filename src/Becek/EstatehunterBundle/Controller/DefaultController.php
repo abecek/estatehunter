@@ -130,6 +130,7 @@ class DefaultController extends Controller
             $options['addedBy'] = $data['addedBy'];
 
             $domGratkaGenerator = new DomGratkaScraper();
+            var_dump($options);
             $offers = $domGratkaGenerator->loadOffersFromPages($options);
         }
 
@@ -267,6 +268,7 @@ class DefaultController extends Controller
             */
 
             $otodomGenerator = new OtodomScraper();
+            var_dump($options);
             $offers = $otodomGenerator->loadOffersFromPages($options);
         }
 
@@ -369,6 +371,16 @@ class DefaultController extends Controller
             'currency' => '',
             'required'   => false,
             'attr' => array('class' => 'form-control')
+        ))->add('priceByAreaFrom', MoneyType::class, array(
+            'label' => 'Cena za m^2 od:',
+            'currency' => '',
+            'required'   => false,
+            'attr' => array('class' => 'form-control')
+        ))->add('priceByAreaTo', MoneyType::class, array(
+            'label' => 'Cena za m^2 do:',
+            'currency' => '',
+            'required'   => false,
+            'attr' => array('class' => 'form-control')
         ))->add('areaFrom', TextType::class, array(
             'label' => 'Powierzchnia od:',
             'required'   => false,
@@ -403,6 +415,8 @@ class DefaultController extends Controller
             $options['offerType'] = $data['offerType'];
             $options['priceFrom'] = $data['priceFrom'];
             $options['priceTo'] = $data['priceTo'];
+            $options['priceByAreaFrom'] = $data['priceByAreaFrom'];
+            $options['priceByAreaTo'] = $data['priceByAreaTo'];
             $options['areaFrom'] = $data['areaFrom'];
             $options['areaTo'] = $data['areaTo'];
             $options['localization']['subregion'] = PolishCharsExtractor::changePolishChars(preg_replace('<<(.*?)>>', '', $data['localizationSubregion']));
@@ -411,6 +425,7 @@ class DefaultController extends Controller
             $options['addedBy'] = $data['addedBy'];
 
             $olxGenerator = new OlxScraper();
+            var_dump($options);
             $offers = $olxGenerator->loadOffersFromPages($options);
         }
 

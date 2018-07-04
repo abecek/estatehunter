@@ -132,6 +132,9 @@ class DomGratkaScraper extends OfferScraperAbstract implements OfferGeneratorInt
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        //curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 
         curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
 
@@ -148,7 +151,8 @@ class DomGratkaScraper extends OfferScraperAbstract implements OfferGeneratorInt
 
         $result = curl_exec($ch);
         if (curl_errno($ch)) {
-            echo 'Error:' . curl_error($ch);
+            var_dump(curl_getinfo($ch));
+            echo 'Error: ' . curl_error($ch) . PHP_EOL;
         }
         curl_close ($ch);
 

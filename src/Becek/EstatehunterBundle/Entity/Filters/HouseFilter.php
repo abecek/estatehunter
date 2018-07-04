@@ -127,11 +127,18 @@ class HouseFilter
     private $floorsCount;
 
     /**
-     * @var string
+     * @var int
      *
      * @ORM\Column(name="buildingType", type="smallint", nullable=true, options={"unsigned"=true})
      */
     private $buildingType;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="offerType", type="smallint", options={"unsigned"=true})
+     */
+    private $offerType;
 
     /**
      * @var int
@@ -892,5 +899,24 @@ class HouseFilter
     {
         return $this->groundAreaTo;
     }
+
+    /**
+     * @return int
+     */
+    public function getOfferType()
+    {
+        return $this->offerType;
+    }
+
+    /**
+     * @param int $offerType
+     * @return HouseFilter
+     */
+    public function setOfferType($offerType)
+    {
+        $this->offerType = $offerType;
+        return $this;
+    }
+
 }
 

@@ -72,8 +72,12 @@ class OtodomScraper extends OfferScraperAbstract implements OfferGeneratorInterf
             isset($options['offerType']) ? $this->offerType = $options['offerType'] : null;
             isset($options['priceFrom']) ? $this->priceFrom = $options['priceFrom'] : null;
             isset($options['priceTo']) ? $this->priceTo = $options['priceTo'] : null;
-            isset($options['priceByAreaFrom']) ? $this->priceByAreaFrom = $options['priceByAreaFrom'] : null;
-            isset($options['priceByAreaTo']) ? $this->priceByAreaTo = $options['priceByAreaTo'] : null;
+
+            if($this->offerType != 'wynajem') {
+                isset($options['priceByAreaFrom']) ? $this->priceByAreaFrom = $options['priceByAreaFrom'] : null;
+                isset($options['priceByAreaTo']) ? $this->priceByAreaTo = $options['priceByAreaTo'] : null;
+            }
+
             isset($options['areaFrom']) ? $this->areaFrom = $options['areaFrom'] : null;
             isset($options['areaTo']) ? $this->areaTo = $options['areaTo'] : null;
             isset($options['localization']) ? $this->localization = $options['localization'] : null;
@@ -160,6 +164,7 @@ class OtodomScraper extends OfferScraperAbstract implements OfferGeneratorInterf
 
         $result = curl_exec($ch);
         if (curl_errno($ch)) {
+            var_dump(curl_getinfo($ch));
             echo 'Error:' . curl_error($ch);
         }
         curl_close ($ch);

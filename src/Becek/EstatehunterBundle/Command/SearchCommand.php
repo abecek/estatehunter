@@ -35,7 +35,6 @@ class SearchCommand extends ContainerAwareCommand
         $this->setName('app:search')
             ->setDescription('Command run by Cron');
 
-        //$this->doc = $this->getContainer()->get('doctrine');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -48,11 +47,264 @@ class SearchCommand extends ContainerAwareCommand
 
         $this->doc = $this->getContainer()->get('doctrine');
 
-        var_dump($this->chooseFilterToSearch());
+        $filter = $this->chooseFilterToSearch();
+        if ($filter !== null) {
+            $filterType = '';
+            if ($filter instanceof FlatFilter) {
+                $filterType = 'flat';
+            }
+            elseif ($filter instanceof HouseFilter) {
+                $filterType = 'house';
+            }
+            elseif ($filter instanceof GroundFilter) {
+                $filterType = 'ground';
+            }
+
+            $gratkaOptions = $this->getGratkaOptionsFromFilter($filter, $filterType);
+            $olxOptions = $this->getOlxOptionsFromFilter($filter, $filterType);
+            $otodomOptions = $this->getOtodomOptionsFromFilter($filter, $filterType);
+
+            echo 'GRATKA' . PHP_EOL;
+            var_dump($gratkaOptions);
+
+            echo 'OTODOM' . PHP_EOL;
+            var_dump($otodomOptions);
+
+            echo 'OLX' . PHP_EOL;
+            var_dump($olxOptions);
+
+            exit;
+
+            $domGratkaGenerator = new DomGratkaScraper();
+            $gratkaOffers = $domGratkaGenerator->loadOffersFromPages($gratkaOptions);
+
+            $olxGenerator = new OlxScraper();
+            $olxOffers = $olxGenerator->loadOffersFromPages($olxOptions);
+
+            $otodomGenerator = new OtodomScraper();
+            $otodomOffers = $otodomGenerator->loadOffersFromPages($otodomOptions);
+
+
+        }
+
 
         $output->writeln('Done');
 
         $this->release();
+    }
+
+
+    protected function getGratkaOptionsFromFilter($filter, $filterType)
+    {
+        $options = array();
+        // mieszkania/domy/dzialki-grunty
+        switch ($filterType) {
+            case 'flat':
+                $options['category'] = 'mieszkania';
+                $options['areaFrom'] = $filter->getAreaFrom();
+                $options['areaTo'] = $filter->getAreaTo();
+
+                /*
+                $options['constructionYearFrom'] = $filter->getConstructionYearFrom();
+                $options['constructionYearTo'] = $filter->getConstructionYearTo();
+
+                $options['floorsCountFrom'] = $filter->getFloorsCountFrom();
+                $options['floorsCountTo'] = $filter->getFloorsCountTo();
+
+                $options['roomsCount'] = $filter->getRoomsCount();
+
+                $options['buildingType'] = $filter->getBuildingType();
+                */
+                break;
+
+            case 'house':
+                $options['category'] = 'domy';
+                $options['areaFrom'] = $filter->getAreaFrom();
+                $options['areaTo'] = $filter->getAreaTo();
+                $options['groundAreaFrom'] = $filter->getGroundAreaFrom();
+                $options['groundAreaTo'] = $filter->getGroundAreaTo();
+
+                /*
+                $options['constructionYearFrom'] = $filter->getConstructionYearFrom();
+                $options['constructionYearTo'] = $filter->getConstructionYearTo();
+
+                $options['floorsCountFrom'] = $filter->getFloorsCountFrom();
+                $options['floorsCountTo'] = $filter->getFloorsCountTo();
+
+                $options['roomsCountFrom'] = $filter->getRoomsCountFrom();
+                $options['roomsCountTo'] = $filter->getRoomsCountTo();
+
+                $options['buildingType'] = $filter->getBuildingType();
+                */
+                break;
+
+            case 'ground':
+                $options['category'] = 'dzialki-grunty';
+                $options['groundAreaFrom'] = $filter->getGroundAreaFrom();
+                $options['groundAreaTo'] = $filter->getGroundAreaTo();
+                break;
+        }
+
+        // sprzedaz/wynajem
+        switch ($filter->getOfferType()) {
+            case 0:
+                $options['offerType'] = 'sprzedaz';
+                break;
+            case 1:
+                $options['offerType'] = 'wynajem';
+                break;
+        }
+
+
+        $options['priceFrom'] = $filter->getPriceFrom();
+        $options['priceTo'] = $filter->getPriceTo();
+
+        $options['priceAreaFrom'] = $filter->getPriceAreaFrom();
+        $options['priceAreaTo'] = $filter->getPriceAreaTo();
+
+        $options['localization']['subregion'] = $filter->getSubRegion();
+        $options['localization']['region'] = $filter->getRegion();
+        $options['localization']['town'] = $filter->getCity();
+
+        $options['addedBy'] = $filter->getAddedBy();
+
+        return $options;
+    }
+
+    protected function getOlxOptionsFromFilter($filter, $filterType)
+    {
+        $options = array();
+        // mieszkania/domy
+        switch ($filterType) {
+            case 'flat':
+                $options['category'] = 'mieszkania';
+                $options['areaFrom'] = $filter->getAreaFrom();
+                $options['areaTo'] = $filter->getAreaTo();
+
+                /*
+                $options['constructionYearFrom'] = $filter->getConstructionYearFrom();
+                $options['constructionYearTo'] = $filter->getConstructionYearTo();
+
+                $options['floorsCountFrom'] = $filter->getFloorsCountFrom();
+                $options['floorsCountTo'] = $filter->getFloorsCountTo();
+
+                $options['roomsCount'] = $filter->getRoomsCount();
+
+                $options['buildingType'] = $filter->getBuildingType();
+                */
+                break;
+
+            case 'house':
+                $options['category'] = 'domy';
+                $options['areaFrom'] = $filter->getAreaFrom();
+                $options['areaTo'] = $filter->getAreaTo();
+
+                /*
+                $options['constructionYearFrom'] = $filter->getConstructionYearFrom();
+                $options['constructionYearTo'] = $filter->getConstructionYearTo();
+
+                $options['floorsCountFrom'] = $filter->getFloorsCountFrom();
+                $options['floorsCountTo'] = $filter->getFloorsCountTo();
+
+                $options['roomsCountFrom'] = $filter->getRoomsCountFrom();
+                $options['roomsCountTo'] = $filter->getRoomsCountTo();
+
+                $options['buildingType'] = $filter->getBuildingType();
+                */
+                break;
+        }
+
+        // sprzedaz/wynajem
+        switch ($filter->getOfferType()) {
+            case 0:
+                $options['offerType'] = 'sprzedaz';
+                break;
+            case 1:
+                $options['offerType'] = 'wynajem';
+                break;
+        }
+
+        $options['priceFrom'] = $filter->getPriceFrom();
+        $options['priceTo'] = $filter->getPriceTo();
+
+        $options['priceAreaFrom'] = $filter->getPriceAreaFrom();
+        $options['priceAreaTo'] = $filter->getPriceAreaTo();
+
+        $options['localization']['subregion'] = $filter->getSubRegion();
+        $options['localization']['region'] = $filter->getRegion();
+        $options['localization']['town'] = $filter->getCity();
+
+        $options['addedBy'] = $filter->getAddedBy();
+
+        return $options;
+    }
+
+    protected function getOtodomOptionsFromFilter($filter, $filterType)
+    {
+        $options = array();
+        // mieszkanie/domy
+        switch ($filterType) {
+            case 'flat':
+                $options['category'] = 'mieszkania';
+                $options['areaFrom'] = $filter->getAreaFrom();
+                $options['areaTo'] = $filter->getAreaTo();
+
+                /*
+                $options['constructionYearFrom'] = $filter->getConstructionYearFrom();
+                $options['constructionYearTo'] = $filter->getConstructionYearTo();
+
+                $options['floorsCountFrom'] = $filter->getFloorsCountFrom();
+                $options['floorsCountTo'] = $filter->getFloorsCountTo();
+
+                $options['roomsCount'] = $filter->getRoomsCount();
+
+                $options['buildingType'] = $filter->getBuildingType();
+                */
+                break;
+
+            case 'house':
+                $options['category'] = 'domy';
+                $options['areaFrom'] = $filter->getAreaFrom();
+                $options['areaTo'] = $filter->getAreaTo();
+
+                /*
+                $options['constructionYearFrom'] = $filter->getConstructionYearFrom();
+                $options['constructionYearTo'] = $filter->getConstructionYearTo();
+
+                $options['floorsCountFrom'] = $filter->getFloorsCountFrom();
+                $options['floorsCountTo'] = $filter->getFloorsCountTo();
+
+                $options['roomsCountFrom'] = $filter->getRoomsCountFrom();
+                $options['roomsCountTo'] = $filter->getRoomsCountTo();
+
+                $options['buildingType'] = $filter->getBuildingType();
+                */
+                break;
+        }
+
+        // sprzedaz/wynajem
+        switch ($filter->getOfferType()) {
+            case 0:
+                $options['offerType'] = 'sprzedaz';
+                break;
+            case 1:
+                $options['offerType'] = 'wynajem';
+                break;
+        }
+
+        $options['priceFrom'] = $filter->getPriceFrom();
+        $options['priceTo'] = $filter->getPriceTo();
+
+        $options['priceAreaFrom'] = $filter->getPriceAreaFrom();
+        $options['priceAreaTo'] = $filter->getPriceAreaTo();
+
+        $options['localization']['subregion'] = $filter->getSubRegion();
+        $options['localization']['region'] = $filter->getRegion();
+        $options['localization']['town'] = $filter->getCity();
+
+        $options['addedBy'] = $filter->getAddedBy();
+
+        return $options;
     }
 
     protected function chooseFilterToSearch()
@@ -100,27 +352,68 @@ class SearchCommand extends ContainerAwareCommand
         }
         // else $choiceByCount = null;
 
+        var_dump($choiceByCount);
 
         $choiceByDateLastSearch = null;
         $currentDate = new \DateTime();
         if ($choiceByCount == 'flat') {
-            if ($flatFilterDateLastSearch->add(new \DateInterval('PT'.$this->secondsToAdd)) < $currentDate) {
+            if ($flatFilters[0]->getDateLastSearch() !== null && $flatFilters[0]->getDateLastSearch()->add(new \DateInterval('PT'.$this->secondsToAdd)) > $currentDate) {
+                if ($houseFilters[0]->getDateLastSearch() !== null && $houseFilters[0]->getDateLastSearch()->add(new \DateInterval('PT'.$this->secondsToAdd)) > $currentDate) {
+                    $choiceByDateLastSearch = 'ground';
+                }
+                else {
+                    $choiceByDateLastSearch = 'house';
+                }
+            }
+            else {
                 $choiceByDateLastSearch = 'flat';
             }
-
         }
         elseif ($choiceByCount == 'house') {
-
+            if ($houseFilters[0]->getDateLastSearch() !== null && $houseFilters[0]->getDateLastSearch()->add(new \DateInterval('PT'.$this->secondsToAdd)) > $currentDate) {
+                if ($flatFilters[0]->getDateLastSearch() !== null && $flatFilters[0]->getDateLastSearch()->add(new \DateInterval('PT'.$this->secondsToAdd)) > $currentDate) {
+                    $choiceByDateLastSearch = 'ground';
+                }
+                else {
+                    $choiceByDateLastSearch = 'flat';
+                }
+            }
+            else {
+                $choiceByDateLastSearch = 'house';
+            }
         }
         elseif ( $choiceByCount == 'ground') {
-
+            if ($groundFilters[0]->getDateLastSearch() !== null && $groundFilters[0]->getDateLastSearch()->add(new \DateInterval('PT'.$this->secondsToAdd)) > $currentDate) {
+                if ($flatFilters[0]->getDateLastSearch() !== null && $flatFilters[0]->getDateLastSearch()->add(new \DateInterval('PT'.$this->secondsToAdd)) > $currentDate) {
+                    $choiceByDateLastSearch = 'house';
+                }
+                else {
+                    $choiceByDateLastSearch = 'flat';
+                }
+            }
+            else {
+                $choiceByDateLastSearch = 'ground';
+            }
         }
         else {
-
+            $temp = ['flat', 'house', 'ground'];
+            $choiceByDateLastSearch = $temp[rand(0,2)];
         }
 
 
         $filter = null;
+        var_dump($choiceByDateLastSearch);
+        switch($choiceByDateLastSearch){
+            case 'flat':
+                $filter = $flatFilters[0];
+                break;
+            case 'house':
+                $filter = $houseFilters[0];
+                break;
+            case 'ground':
+                $filter = $groundFilters[0];
+                break;
+        }
 
         return $filter;
     }

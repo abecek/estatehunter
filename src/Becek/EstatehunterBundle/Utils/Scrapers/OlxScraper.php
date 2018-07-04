@@ -68,6 +68,12 @@ class OlxScraper extends OfferScraperAbstract implements OfferGeneratorInterface
             isset($options['offerType']) ? $this->offerType = $options['offerType'] : null;
             isset($options['priceFrom']) ? $this->priceFrom = $options['priceFrom'] : null;
             isset($options['priceTo']) ? $this->priceTo = $options['priceTo'] : null;
+
+            if($this->offerType != 'wynajem') {
+                isset($options['priceByAreaFrom']) ? $this->priceByAreaFrom = $options['priceByAreaFrom'] : null;
+                isset($options['priceByAreaTo']) ? $this->priceByAreaTo = $options['priceByAreaTo'] : null;
+            }
+
             isset($options['areaFrom']) ? $this->areaFrom = $options['areaFrom'] : null;
             isset($options['areaTo']) ? $this->areaTo = $options['areaTo'] : null;
             isset($options['localization']) ? $this->localization = $options['localization'] : null;
@@ -91,6 +97,9 @@ class OlxScraper extends OfferScraperAbstract implements OfferGeneratorInterface
 
         if($this->priceFrom !== null) $url .= 'search[filter_float_price:from]='. $this->priceFrom .'&';
         if($this->priceTo !== null) $url .= 'search[filter_float_price:to]='. $this->priceTo .'&';
+
+        if($this->priceByAreaFrom !== null) $url .= 'search[filter_float_price_per_m:from]='. $this->priceByAreaFrom .'&';
+        if($this->priceByAreaTo !== null) $url .= 'search[filter_float_price_per_m:to]='. $this->priceByAreaTo .'&';
 
         if($this->areaFrom !== null) $url .= 'search[filter_float_m:from]='. $this->areaFrom .'&';
         if($this->areaTo !== null) $url .= 'search[filter_float_m:to]='. $this->areaTo .'&';
@@ -139,6 +148,7 @@ class OlxScraper extends OfferScraperAbstract implements OfferGeneratorInterface
 
         $result = curl_exec($ch);
         if (curl_errno($ch)) {
+            var_dump(curl_getinfo($ch));
             echo 'Error:' . curl_error($ch);
         }
         curl_close ($ch);

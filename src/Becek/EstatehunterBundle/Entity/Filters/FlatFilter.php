@@ -113,11 +113,18 @@ class FlatFilter
     private $roomsCount;
 
     /**
-     * @var string
+     * @var int
      *
      * @ORM\Column(name="buildingType", type="smallint", nullable=true, options={"unsigned"=true})
      */
     private $buildingType;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="offerType", type="smallint", options={"unsigned"=true})
+     */
+    private $offerType;
 
     /**
      * @var int
@@ -849,6 +856,22 @@ class FlatFilter
         return $this;
     }
 
+    /**
+     * @return int
+     */
+    public function getOfferType()
+    {
+        return $this->offerType;
+    }
 
+    /**
+     * @param int $offerType
+     * @return FlatFilter
+     */
+    public function setOfferType($offerType)
+    {
+        $this->offerType = $offerType;
+        return $this;
+    }
 
 }

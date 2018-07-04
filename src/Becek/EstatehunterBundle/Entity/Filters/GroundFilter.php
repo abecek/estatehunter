@@ -81,6 +81,13 @@ class GroundFilter
     /**
      * @var int
      *
+     * @ORM\Column(name="offerType", type="smallint", options={"unsigned"=true})
+     */
+    private $offerType;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="addedBy", type="smallint", nullable=true, options={"unsigned"=true})
      */
     private $addedBy;
@@ -621,5 +628,24 @@ class GroundFilter
     {
         return $this->groundAreaTo;
     }
+
+    /**
+     * @return int
+     */
+    public function getOfferType()
+    {
+        return $this->offerType;
+    }
+
+    /**
+     * @param int $offerType
+     * @return GroundFilter
+     */
+    public function setOfferType($offerType)
+    {
+        $this->offerType = $offerType;
+        return $this;
+    }
+
 }
 
